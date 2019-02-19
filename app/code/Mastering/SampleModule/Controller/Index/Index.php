@@ -9,8 +9,7 @@ class Index extends Action
 {
     public function execute()
     {
-        $result = $this->resultFactory->create(ResultFactory::TYPE_RAW);
-        $result->setContents("hello world frontend");
-        return $result;
+        return $result = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
+
     }
 }
