@@ -3,5 +3,12 @@
 ?>
 
 <?php foreach ($block -> getItems() as $item): ?>
-    <?php echo $item->getName(); ?> == <?php echo $item->getDescription(); ?>
+    <?php echo $item->getName(); ?>  ;  <?php echo $item->getDescription(); ?>
 <?php endforeach; ?>
+
+<?php
+    echo '</br>==>';
+    var_dump($block-> getAllOrders()-> getData());
+
+    $js = json_encode($block-> getAllOrders()-> getData());
+    print_r('<script>console.log('.$js.')</script>');
