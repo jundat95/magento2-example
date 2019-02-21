@@ -9,7 +9,8 @@
 <?php
     echo '</br></br>';
 
-    // print_r($block-> getAllOrders()->getData());
+    // print_r($block-> getAllOrders()->getData()[2]);
+
 
     $order = 1;
     if (isset($_GET['order'])) {
@@ -17,14 +18,24 @@
     }
     $data = $block->getOrderById($order);
 
-    echo '</br></br>';
+    echo '</br>orders</br>';
     print_r($data->getData());
 
-    echo '</br></br>';
+    echo '</br>getShippingAddress</br>';
     print_r($data->getShippingAddress()->getData());
     
-    echo '</br></br>';
+    echo '</br>getBillingAddress</br>';
     print_r($data->getBillingAddress()->getData());
+
+    echo '</br>getAllItems</br>';
+    $orderItems = $data->getAllItems();
+    foreach ($orderItems as $item){
+        echo '</br>';
+        print_r($item->getQtyOrdered());
+        print_r($item->getDescription());
+        print_r($item->getName());
+        print_r($item->getPrice());
+    }
     
     echo '</br></br>';
 
