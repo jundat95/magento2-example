@@ -8,20 +8,21 @@ use Mastering\SampleModule\Model\ResourceModel\Item\CollectionFactory;
 class Hello extends Template {
 
     private $collectionFactory;
-    protected $_orderCollectionFactory;
-    protected $_orderRepository;
+    protected $orderCollectionFactory;
+    protected $order;
 
     public function __construct(
         Template\Context $content,
         CollectionFactory $collectionFactory,
         \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
-        \Magento\Sales\Api\OrderRepositoryInterface $orderRepository,
+        \Magento\Sales\Api\Data\OrderInterface $order,
         array $data = []
     )
     {
         $this->collectionFactory = $collectionFactory;
-        $this->_orderCollectionFactory = $orderCollectionFactory;
-        $this ->_orderRepository = $orderRepository;
+        $this->orderCollectionFactory = $orderCollectionFactory;
+        $this->order = $order;
+
         parent::__construct($content, $data);
     }
 
@@ -33,13 +34,13 @@ class Hello extends Template {
     }
 
     public function getAllOrders() {
-        $result = $this->_orderCollectionFactory->create()->addAttributeToSelect('*');
-        $data = $result->addFieldToFilter('status', 'pending');
+        $result = $this->orderCollectionFactory->create()->addAttributeToSelect('*');
+        $data = $result;//->addFieldToFilter('status', 'pending');
         return $data;
     }
 
-    public function getOrderById() {
-       return 'end';
+    public function getOrderById($orderId) {
+        return $this->order->load($orderId);
     }
 
 }

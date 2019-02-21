@@ -3,12 +3,18 @@
 ?>
 
 <?php foreach ($block -> getItems() as $item): ?>
-    <?php echo $item->getName(); ?>  ;  <?php echo $item->getDescription(); ?>
+    </br> <?php echo $item->getName(); ?>  ;  <?php echo $item->getDescription(); ?>
 <?php endforeach; ?>
 
 <?php
-    echo '</br>==>';
-    var_dump($block-> getAllOrders()-> getData());
+    echo '</br></br>';
 
-    $js = json_encode($block-> getAllOrders()-> getData());
-    print_r('<script>console.log('.$js.')</script>');
+//    var_dump($block-> getAllOrders()-> getData());
+
+    $data = $block->getOrderById(5);
+
+//    $billingAddress = $data->getBillingAddress();
+//    $shippingAddress = $data->getShippingAddress();
+
+    var_dump($data->getData());
+
