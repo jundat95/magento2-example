@@ -9,12 +9,23 @@
 <?php
     echo '</br></br>';
 
-//    var_dump($block-> getAllOrders()-> getData());
+    // print_r($block-> getAllOrders()->getData());
 
-    $data = $block->getOrderById(5);
+    $order = 1;
+    if (isset($_GET['order'])) {
+        $order = $_GET['order'];
+    }
+    $data = $block->getOrderById($order);
 
-//    $billingAddress = $data->getBillingAddress();
-//    $shippingAddress = $data->getShippingAddress();
+    echo '</br></br>';
+    print_r($data->getData());
 
-    var_dump($data->getData());
+    echo '</br></br>';
+    print_r($data->getShippingAddress()->getData());
+    
+    echo '</br></br>';
+    print_r($data->getBillingAddress()->getData());
+    
+    echo '</br></br>';
+
 

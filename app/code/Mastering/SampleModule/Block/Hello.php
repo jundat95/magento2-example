@@ -9,7 +9,7 @@ class Hello extends Template {
 
     private $collectionFactory;
     protected $orderCollectionFactory;
-    protected $order;
+    public $order;
 
     public function __construct(
         Template\Context $content,
@@ -40,7 +40,8 @@ class Hello extends Template {
     }
 
     public function getOrderById($orderId) {
-        return $this->order->load($orderId);
+        $order = $this->order->load($orderId);
+        return $order;
     }
 
 }
