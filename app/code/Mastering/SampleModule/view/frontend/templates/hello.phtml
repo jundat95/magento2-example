@@ -9,8 +9,16 @@
 <?php
     echo '</br></br>';
 
-    // print_r($block-> getAllOrders()->getData()[2]);
+    echo '<pre>';
+    print_r($block-> getAllOrders()->getData());
+    echo '</pre>';
 
+    // $datanew = $block-> getAllOrders() -> getData()[2];
+    echo '<pre>';
+    // print_r(gettype($datanew));
+    // print_r(get_class_methods($datanew));
+    // print_r(get_object_vars($datanew));
+    echo '</pre>';
 
     $order = 1;
     if (isset($_GET['order'])) {
@@ -19,7 +27,11 @@
     $data = $block->getOrderById($order);
 
     echo '</br>orders</br>';
-    print_r($data->getData());
+    echo '<pre>';
+    // var_dump($data->getData());
+    $class_mt = get_class_methods($data);
+    print_r($class_mt);
+    echo '</pre>';
 
     echo '</br>getShippingAddress</br>';
     print_r($data->getShippingAddress()->getData());

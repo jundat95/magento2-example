@@ -38,7 +38,7 @@ class Hello extends Template {
 
     public function getAllOrders() {
         $result = $this->orderCollectionFactory->create()->addAttributeToSelect('*');
-        $data = $result;//->addFieldToFilter('status', 'pending');
+        $data = $result;//->addFieldToFilter('created_time', array('gt' => Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime('-1 day'))));
         return $data;
     }
 
