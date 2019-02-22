@@ -1,6 +1,6 @@
 <?php
 /**
- * Niteco Co Ltd.
+ * Niteco
  * User: tinh.ngo
  * Date: 2/20/2019
  * Time: 3:43 PM

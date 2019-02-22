@@ -9,45 +9,55 @@
 <?php
     echo '</br></br>';
 
+//    echo '<pre>';
+//    print_r($block-> getAllOrders()->getData());
+//    echo '</pre>';
+
     echo '<pre>';
-    print_r($block-> getAllOrders()->getData());
+//    print_r($block-> getAllOrders()->getData());
+        foreach ($block->getAllOrders() as $order) {
+            echo '</br>';
+            print_r($order->getData());
+            $order->setData('sent_to_oracle', 1);
+            $order->save();
+        }
     echo '</pre>';
 
     // $datanew = $block-> getAllOrders() -> getData()[2];
-    echo '<pre>';
+//    echo '<pre>';
     // print_r(gettype($datanew));
     // print_r(get_class_methods($datanew));
     // print_r(get_object_vars($datanew));
-    echo '</pre>';
+//    echo '</pre>';
 
-    $order = 1;
-    if (isset($_GET['order'])) {
-        $order = $_GET['order'];
-    }
-    $data = $block->getOrderById($order);
-
-    echo '</br>orders</br>';
-    echo '<pre>';
-    // var_dump($data->getData());
-    $class_mt = get_class_methods($data);
-    print_r($class_mt);
-    echo '</pre>';
-
-    echo '</br>getShippingAddress</br>';
-    print_r($data->getShippingAddress()->getData());
-    
-    echo '</br>getBillingAddress</br>';
-    print_r($data->getBillingAddress()->getData());
-
-    echo '</br>getAllItems</br>';
-    $orderItems = $data->getAllItems();
-    foreach ($orderItems as $item){
-        echo '</br>';
-        print_r($item->getQtyOrdered());
-        print_r($item->getDescription());
-        print_r($item->getName());
-        print_r($item->getPrice());
-    }
+//    $order = 1;
+//    if (isset($_GET['order'])) {
+//        $order = $_GET['order'];
+//    }
+//    $data = $block->getOrderById($order);
+//
+//    echo '</br>orders</br>';
+//    echo '<pre>';
+//    // var_dump($data->getData());
+//    $class_mt = get_class_methods($data);
+//    print_r($class_mt);
+//    echo '</pre>';
+//
+//    echo '</br>getShippingAddress</br>';
+//    print_r($data->getShippingAddress()->getData());
+//
+//    echo '</br>getBillingAddress</br>';
+//    print_r($data->getBillingAddress()->getData());
+//
+//    echo '</br>getAllItems</br>';
+//    $orderItems = $data->getAllItems();
+//    foreach ($orderItems as $item){
+//        echo '</br>';
+//        print_r($item->getQtyOrdered());
+//        print_r($item->getDescription());
+//        print_r($item->getName());
+//        print_r($item->getPrice());
+//    }
     
     echo '</br></br>';
 

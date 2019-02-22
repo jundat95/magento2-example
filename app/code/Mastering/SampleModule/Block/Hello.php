@@ -37,8 +37,17 @@ class Hello extends Template {
     }
 
     public function getAllOrders() {
-        $result = $this->orderCollectionFactory->create()->addAttributeToSelect('*');
-        $data = $result;//->addFieldToFilter('created_time', array('gt' => Mage::getModel('core/date')->date('Y-m-d H:i:s', strtotime('-1 day'))));
+
+        $to = date("Y-m-d h:i:s"); // current date
+        $from = strtotime('-1 day', strtotime($to));
+        $from = date('Y-m-d h:i:s', $from); // 2 days before
+
+        $result = $this->orderCollectionFactory->create();
+//            ->addAttributeToSelect('*');
+        $data = $result;
+//            ->addFieldToFilter('status', 'processing')
+//            ->addFieldToFilter('sent_to_oracle', 0)
+//            ->addFieldToFilter('created_at', array('from' => $from, 'to' => $to));
         return $data;
     }
 
