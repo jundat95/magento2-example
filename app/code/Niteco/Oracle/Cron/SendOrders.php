@@ -30,7 +30,10 @@ class SendOrders {
     public function execute() {
         $oders = $this->orderManager->getOrders();
         foreach ($oders as $order) {
-            if ($this->oracleManager->pushOrderToOracle($order)) {
+            $orderData = $this->orderManager->getJsonById($order->getId());
+            // $orderJson = json_encode($orderData);
+
+            if ($this->oracleManager->pushOrderToOracle($orderData)) {
                 $this->orderManager->setStatusSentOrder(SentToOracleStatus::SENT_SUCCESS, $order);
                 $this->orderManager->addOrderComment('Transfer order #'.$order->getId().' success to Oracle.', $order);
             } else {

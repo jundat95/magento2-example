@@ -19,8 +19,9 @@ class OracleManager {
         $this->sentOracleLogger = $sentOracleLogger;
     }
 
-    public function pushOrderToOracle($order) {
-        $this->sentOracleLogger->logText('Push order #'.$order->getId().' to Oracle.');
-        return false;
+    public function pushOrderToOracle($orderJson) {
+        // $this->sentOracleLogger->logArray($orderJson);
+        $this->sentOracleLogger->logText('Push order # to Oracle.');
+        return true;
     }
 }

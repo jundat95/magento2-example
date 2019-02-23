@@ -31,7 +31,11 @@ class OrderManager {
         $from = strtotime('-1 day', strtotime($to));
         $from = date('Y-m-d h:i:s', $from); // 2 days before
 
-        $data = $this->orderCollectionFactory->create();
+        $data = $this->orderCollectionFactory->create()
+            ->addAttributeToSelect('entity_id')
+            ->addAttributeToSelect('status')
+            ->addAttributeToSelect('store_id')
+            ->addAttributeToSelect('sent_to_oracle');
 //        ->addFieldToFilter('status', 'processing')
 //        ->addFieldToFilter('sent_to_oracle', 0)
 //        ->addFieldToFilter('store_id', 2)
@@ -42,6 +46,26 @@ class OrderManager {
 
     public function getOrderById($orderId) {
         return $this->order->load($orderId);
+    }
+
+    public function getJsonById($orderId) {
+        
+        $order = $this->getOrderById($orderId);
+
+        $orderData = $order->getData();
+        $shippingAddress = $order->getShippingAddress()->getData();
+        $billingAddress = $order->getBillingAddress()->getData();
+        $orderData['shippingAddress'] = $shippingAddress;
+        $orderData['billingAddress'] = $billingAddress;
+        
+        $allItems = [];
+        $allItemsResult = $order->getAllItems();
+        foreach($allItemsResult as $item) {
+            array_push($allItems, $item->getData());
+        }
+        $orderData['allItems'] = $allItems;
+
+        return $orderData;
     }
 
     public function setStatusSentOrder($status, $order) {
@@ -55,5 +79,7 @@ class OrderManager {
             ->setIsCustomerNotified(false);
         $order->save();
     }
+
+
 
 }

@@ -42,8 +42,12 @@ class Hello extends Template {
         $from = strtotime('-1 day', strtotime($to));
         $from = date('Y-m-d h:i:s', $from); // 2 days before
 
-        $result = $this->orderCollectionFactory->create();
+        $result = $this->orderCollectionFactory->create()
 //            ->addAttributeToSelect('*');
+              ->addAttributeToSelect('entity_id')
+              ->addAttributeToSelect('status')
+              ->addAttributeToSelect('store_id')
+              ->addAttributeToSelect('sent_to_oracle');
         $data = $result;
 //            ->addFieldToFilter('status', 'processing')
 //            ->addFieldToFilter('sent_to_oracle', 0)
