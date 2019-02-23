@@ -18,7 +18,7 @@
         foreach ($block->getAllOrders() as $order) {
             echo '</br>';
             print_r($order->getData());
-            $order->setData('sent_to_oracle', 1);
+            $order->setData('sent_to_oracle', 0);
             $order->save();
         }
     echo '</pre>';

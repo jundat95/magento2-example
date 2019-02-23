@@ -10,14 +10,17 @@ namespace Niteco\Oracle\Helper;
 
 class OrderManager {
 
+    private $sentOracleLogger;
     protected $orderCollectionFactory;
     protected $order;
 
     public function __construct(
+        \Niteco\Oracle\Common\SentOracleLogger $sentOracleLogger,
         \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
         \Magento\Sales\Api\Data\OrderInterface $order
     )
     {
+        $this->sentOracleLogger = $sentOracleLogger;
         $this->orderCollectionFactory = $orderCollectionFactory;
         $this->order = $order;
     }
@@ -41,8 +44,15 @@ class OrderManager {
         return $this->order->load($orderId);
     }
 
-    public function setStatusSentOrder(SentToOracleStatus $status, $order) {
+    public function setStatusSentOrder($status, $order) {
         $order->setData('sent_to_oracle', $status);
+        $order->save();
+    }
+
+    public function addOrderComment($comment, $order) {
+        $order->addStatusHistoryComment($comment)
+            ->setIsVisibleOnFront(false)
+            ->setIsCustomerNotified(false);
         $order->save();
     }
 

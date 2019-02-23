@@ -32,8 +32,10 @@ class SendOrders {
         foreach ($oders as $order) {
             if ($this->oracleManager->pushOrderToOracle($order)) {
                 $this->orderManager->setStatusSentOrder(SentToOracleStatus::SENT_SUCCESS, $order);
+                $this->orderManager->addOrderComment('Transfer order #'.$order->getId().' success to Oracle.', $order);
             } else {
-                $this->sentOracleLogger->logText('Sent to oracle error order: '.$order->getId());
+                $this->orderManager->setStatusSentOrder(SentToOracleStatus::SENT_FAIL, $order);
+                $this->sentOracleLogger->logText('Transfer order #'.$order->getId().' fail to Oracle.');
             }
         }
     }

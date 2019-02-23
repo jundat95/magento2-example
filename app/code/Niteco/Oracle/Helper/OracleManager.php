@@ -20,7 +20,7 @@ class OracleManager {
     }
 
     public function pushOrderToOracle($order) {
-        $this->sentOracleLogger->logArray($order-getData());
-        return true;
+        $this->sentOracleLogger->logText('Push order #'.$order->getId().' to Oracle.');
+        return false;
     }
 }

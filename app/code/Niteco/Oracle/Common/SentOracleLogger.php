@@ -12,6 +12,6 @@ class SentOracleLogger extends Logger {
 
     public function __construct()
     {
-        parent::__construct('/var/log/niteco_sent_oracle_fail.log');
+        parent::__construct('/var/log/niteco_sent_oracle.log');
     }
 }

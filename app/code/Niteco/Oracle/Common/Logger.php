@@ -21,7 +21,7 @@ abstract class Logger {
         $writer = new \Zend\Log\Writer\Stream(BP . $this->path_file_log);
         $logger = new \Zend\Log\Logger();
         $logger->addWriter($writer);
-        $logger->info($text.date());
+        $logger->info($text);
     }
 
     public function logArray($array) {
