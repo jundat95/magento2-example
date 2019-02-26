@@ -8,6 +8,7 @@
 
 namespace Niteco\Oracle\Setup;
 
+use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
@@ -25,17 +26,70 @@ class InstallSchema implements InstallSchemaInterface {
     {
         $setup->startSetup();
 
-        $setup->getConnection()->addColumn(
-            $setup->getTable('sales_order'),
-            'sent_to_oracle',
-            [
-                'type' => \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
-                'length' => 10,
-                'nullable' => true,
-                'default' => '0',
-                'comment' => 'Custom attribute for Oracle'
-            ]
+//        $setup->getConnection()->addColumn(
+//            $setup->getTable('sales_order'),
+//            'sent_to_oracle',
+//            [
+//                'type'      => Table::TYPE_INTEGER,
+//                'length'    => 10,
+//                'nullable'  => true,
+//                'default'   => '0',
+//                'comment'   => 'Custom attribute for Oracle'
+//            ]
+//        );
+
+        // Create new table
+        $table = $setup->getConnection()->newTable(
+            $setup->getTable('niteco_oracle_schedule')
+        )->addColumn(
+            'id',
+            Table::TYPE_INTEGER,
+            null,
+            ['identity' => true, 'nullable' => false, 'primary' => true],
+            'Id'
+        )->addColumn(
+            'entity_id',
+            Table::TYPE_INTEGER,
+            null,
+            ['nullable' => false],
+            'Order id'
+        )->addColumn(
+            'increment_id',
+            Table::TYPE_INTEGER,
+            null,
+            ['nullable' => false],
+            'Order increment id'
+        )->addColumn(
+            'status',
+            Table::TYPE_INTEGER,
+            10,
+            ['nullable' => false, 'default' => '0'],
+            'Status oracle'
+        )->addColumn(
+            'created_at',
+            Table::TYPE_TIMESTAMP,
+            null,
+            ['nullable' => true, 'default' => Table::TIMESTAMP_INIT],
+            'Order create at'
+        )->addColumn(
+            'executed_at',
+            Table::TYPE_TIMESTAMP,
+            null,
+            ['nullable' => true],
+            'Execute schedule'
+        )->addColumn(
+            'finished_at',
+            Table::TYPE_TIMESTAMP,
+            null,
+            ['nullable' => true],
+            'Finished schedule'
         );
+//            ->addIndex(
+//            $setup->getIdxName('niteco_oracle_schedule', ['status']),
+//            ['status']
+//        );
+
+        $setup->getConnection()->createTable($table);
 
         $setup->endSetup();
     }

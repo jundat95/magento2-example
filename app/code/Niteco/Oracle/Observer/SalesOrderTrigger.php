@@ -6,32 +6,49 @@
  * Time: 4:12 PM
  */
 
-namespace Niteco\Oracle;
-use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
+namespace Niteco\Oracle\Observer;
 
-class SalesOrderTrigger implements ObserverInterface{
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Event\Observer;
+use Niteco\Oracle\Common\SentOracleLogger;
+
+use Niteco\Oracle\Model\ScheduleFactory;
+
+class SalesOrderTrigger implements ObserverInterface {
 
     private $sentOracleLogger;
+    private $scheduleFactory;
 
     public function __construct(
-        \Niteco\Oracle\Common\SentOracleLogger $sentOracleLogger
+        SentOracleLogger $sentOracleLogger,
+        ScheduleFactory $scheduleFactory
     )
     {
         $this->sentOracleLogger = $sentOracleLogger;
+        $this->scheduleFactory = $scheduleFactory;
     }
 
     public function execute(Observer $observer)
     {
         $order = $observer->getEvent()->getOrder();
-        if ($order->getState() == 'pending_payment') {
-            $this->sentOracleLogger->logText("observer: order is pending_payment");
-        } else
-        if ($order->getState() == 'processing') {
-            $this->sentOracleLogger->logText("observer: order is processing");
-        } else
-        if ($order->getState() == 'complete') {
-            $this->sentOracleLogger->logText("observer: order is complete");
+        if ($order instanceof \Magento\Framework\Model\AbstractModel) {
+//            if ($order->getStatus() == 'pending') {
+//                $this->sentOracleLogger->logText("observer: order is new");
+//            }
+//            if ($order->getStatus() == 'complete') {
+//                $this->sentOracleLogger->logText("observer: order is complete");
+//            }
+            if ($order->getStatus() == 'processing') {
+                $this->sentOracleLogger->logText("observer: order is processing");
+                $schedule = $this->scheduleFactory->create();
+                $schedule->setData('entity_id', 1);
+                $schedule->setData('increment_id', 1);
+                $schedule->setIsObjectNew(true);
+                $schedule->save();
+            }
+
         }
+
+        return $this;
     }
 }
