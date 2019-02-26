@@ -30,8 +30,10 @@ class SendOrders {
     public function execute() {
         $oders = $this->orderManager->getOrders();
         foreach ($oders as $order) {
-            $orderData = $this->orderManager->getJsonById($order->getId());
-            // $orderJson = json_encode($orderData);
+            $orderData = $this->orderManager->getOrderData($order->getId());
+
+            // Todo: filter data
+            // $orderData = formatDataBeforeSendToOracle();
 
             if ($this->oracleManager->pushOrderToOracle($orderData)) {
                 $this->orderManager->setStatusSentOrder(SentToOracleStatus::SENT_SUCCESS, $order);

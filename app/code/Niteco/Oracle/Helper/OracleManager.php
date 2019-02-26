@@ -19,9 +19,38 @@ class OracleManager {
         $this->sentOracleLogger = $sentOracleLogger;
     }
 
-    public function pushOrderToOracle($orderJson) {
-        // $this->sentOracleLogger->logArray($orderJson);
+    public function pushOrderToOracle($order) {
+
+        $orderJson = json_encode($order);
+
+        $url = 'http://oracle.local/';
+        $ch = curl_init();
+
+        //set the url, number of POST vars, POST data
+        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $orderJson);
+
+        // Set HTTP Header for POST request 
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($orderJson))
+        );
+
+        // execute
+        $response = curl_exec($ch);
+        // close connection
+        curl_close($ch);
+
+        // $this->sentOracleLogger->logArray($order);
+
+        $this->sentOracleLogger->logArray($orderJson);
+
+        // $this->sentOracleLogger->logArray($response);
         $this->sentOracleLogger->logText('Push order # to Oracle.');
+
         return true;
     }
 }

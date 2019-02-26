@@ -48,7 +48,7 @@ class OrderManager {
         return $this->order->load($orderId);
     }
 
-    public function getJsonById($orderId) {
+    public function getOrderData($orderId) {
         
         $order = $this->getOrderById($orderId);
 
