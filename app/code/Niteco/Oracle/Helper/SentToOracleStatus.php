@@ -14,7 +14,8 @@ abstract class SentToOracleStatus {
      * Define status: sent_to_oracle
      */
     const CREATED = 0;
-    const SENT_SUCCESS = 1;
-    const SENT_FAIL = 2;
+    const SENDING = 1;
+    const SENT_SUCCESS = 2;
+    const SENT_FAIL = 3;
 
 }
