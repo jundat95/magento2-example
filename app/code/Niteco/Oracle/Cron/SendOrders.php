@@ -29,7 +29,16 @@ class SendOrders {
     public function execute() {
 
         $ordersSchedule = $this->orderManager->getOrdersSchedule();
-        $this->sentOracleLogger->logArray($ordersSchedule->getData());
+
+        foreach ($ordersSchedule as $order) {
+            $orderData = $this->orderManager->getOrderData($order->getData('entity_id'));
+            if ($this->oracleManager->pushOrderToOracle($orderData)) {
+                $this->sentOracleLogger->logText('sent success to oracle');
+            } else {
+                $this->sentOracleLogger->logText('sent fail to oracle');
+            }
+        }
+
 
     }
 }
