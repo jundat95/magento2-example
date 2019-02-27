@@ -3,7 +3,6 @@
 namespace Mastering\SampleModule\Block;
 
 use Magento\Framework\View\Element\Template;
-use Mastering\SampleModule\Model\ResourceModel\Item\CollectionFactory;
 
 class Hello extends Template {
 
@@ -14,7 +13,7 @@ class Hello extends Template {
 
     public function __construct(
         Template\Context $content,
-        CollectionFactory $collectionFactory,
+        \Mastering\SampleModule\Model\ResourceModel\Item\CollectionFactory $collectionFactory,
         \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
         \Magento\Sales\Api\Data\OrderInterface $order,
         \Magento\Sales\Model\OrderFactory $orderFactory,
@@ -33,7 +32,9 @@ class Hello extends Template {
      * @return \Mastering\SampleModule\Model\ResourceModel\Item[]
      */
     public function getItems() {
-        return $this->collectionFactory->create()->getItems();
+        return $this->collectionFactory->create()
+            ->addAttributeToSelect('*')
+            ->addFieldToFilter('status', 0);
     }
 
     public function getAllOrders() {

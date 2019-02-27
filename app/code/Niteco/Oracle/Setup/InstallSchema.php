@@ -27,17 +27,6 @@ class InstallSchema implements InstallSchemaInterface {
     {
         $setup->startSetup();
 
-//        $setup->getConnection()->addColumn(
-//            $setup->getTable('sales_order'),
-//            'sent_to_oracle',
-//            [
-//                'type'      => Table::TYPE_INTEGER,
-//                'length'    => 10,
-//                'nullable'  => true,
-//                'default'   => '0',
-//                'comment'   => 'Custom attribute for Oracle'
-//            ]
-//        );
 
         // Create new table
         $table = $setup->getConnection()->newTable(

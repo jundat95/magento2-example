@@ -11,18 +11,21 @@ namespace Niteco\Oracle\Helper;
 class OrderManager {
 
     private $sentOracleLogger;
+    protected $orderInterface;
     protected $orderCollectionFactory;
-    protected $order;
+    protected $scheduleCollectionFactory;
 
     public function __construct(
         \Niteco\Oracle\Common\SentOracleLogger $sentOracleLogger,
+        \Magento\Sales\Api\Data\OrderInterface $orderInterface,
         \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
-        \Magento\Sales\Api\Data\OrderInterface $order
+        \Niteco\Oracle\Model\ResourceModel\Schedule\CollectionFactory $scheduleCollectionFactory
     )
     {
         $this->sentOracleLogger = $sentOracleLogger;
+        $this->orderInterface = $orderInterface;
         $this->orderCollectionFactory = $orderCollectionFactory;
-        $this->order = $order;
+        $this->scheduleCollectionFactory = $scheduleCollectionFactory;
     }
 
     public function getOrders() {
@@ -34,8 +37,7 @@ class OrderManager {
         $data = $this->orderCollectionFactory->create()
             ->addAttributeToSelect('entity_id')
             ->addAttributeToSelect('status')
-            ->addAttributeToSelect('store_id')
-            ->addAttributeToSelect('sent_to_oracle');
+            ->addAttributeToSelect('store_id');
 //        ->addFieldToFilter('status', 'processing')
 //        ->addFieldToFilter('sent_to_oracle', 0)
 //        ->addFieldToFilter('store_id', 2)
@@ -44,8 +46,17 @@ class OrderManager {
         return $data;
     }
 
+    public function getOrdersSchedule() {
+        $ordersSchedule = $this->scheduleCollectionFactory->create();
+//            ->addAttributeToSelect('*');
+//            ->addFieldToFilter('status', 0);
+
+        return $ordersSchedule;
+
+    }
+
     public function getOrderById($orderId) {
-        return $this->order->load($orderId);
+        return $this->orderInterface->load($orderId);
     }
 
     public function getOrderData($orderId) {
