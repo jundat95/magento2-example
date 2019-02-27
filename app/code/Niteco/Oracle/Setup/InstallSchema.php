@@ -21,6 +21,7 @@ class InstallSchema implements InstallSchemaInterface {
      * @param SchemaSetupInterface $setup
      * @param ModuleContextInterface $context
      * @return void
+     * @throws \Zend_Db_Exception
      */
     public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
@@ -66,6 +67,12 @@ class InstallSchema implements InstallSchemaInterface {
             ['nullable' => false, 'default' => '0'],
             'Status oracle'
         )->addColumn(
+            'message',
+            Table::TYPE_TEXT,
+            null,
+            ['nullable' => true],
+            'Message oracle'
+        )->addColumn(
             'created_at',
             Table::TYPE_TIMESTAMP,
             null,
@@ -83,11 +90,18 @@ class InstallSchema implements InstallSchemaInterface {
             null,
             ['nullable' => true],
             'Finished schedule'
+        )->addIndex(
+            $setup->getIdxName('niteco_oracle_schedule', ['status']),
+            ['status']
+        )->addIndex(
+            $setup->getIdxName(
+                'niteco_oracle_schedule',
+                ['entity_id'],
+                \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
+            ),
+            ['entity_id'],
+            ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE]
         );
-//            ->addIndex(
-//            $setup->getIdxName('niteco_oracle_schedule', ['status']),
-//            ['status']
-//        );
 
         $setup->getConnection()->createTable($table);
 

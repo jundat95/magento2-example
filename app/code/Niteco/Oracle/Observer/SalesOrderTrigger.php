@@ -41,8 +41,8 @@ class SalesOrderTrigger implements ObserverInterface {
             if ($order->getStatus() == 'processing') {
                 $this->sentOracleLogger->logText("observer: order is processing");
                 $schedule = $this->scheduleFactory->create();
-                $schedule->setData('entity_id', 1);
-                $schedule->setData('increment_id', 1);
+                $schedule->setData('entity_id', $order->getData('entity_id'));
+                $schedule->setData('increment_id', $order->getData('increment_id'));
                 $schedule->setIsObjectNew(true);
                 $schedule->save();
             }
