@@ -25,6 +25,26 @@ class ScheduleManager {
 //            ->addFieldToFilter('status', 0);
 
         return $ordersSchedule;
-
     }
+
+    public function changeStatus($status, $schedule) {
+        $schedule->setData('status', $status);
+        $schedule->save();
+    }
+
+    public function setMessage($message, $schedule) {
+        $schedule->setData('message', $message);
+        $schedule->save();
+    }
+
+    public function changeTimeExecute($time, $schedule) {
+        $schedule->setData('executed_at', $time);
+        $schedule->save();
+    }
+
+    public function changeTimeFinished($time, $schedule) {
+        $schedule->setData('finished_at', $time);
+        $schedule->save();
+    }
+
 }

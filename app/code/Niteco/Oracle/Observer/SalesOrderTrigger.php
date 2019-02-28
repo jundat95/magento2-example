@@ -39,7 +39,7 @@ class SalesOrderTrigger implements ObserverInterface {
 //                $this->sentOracleLogger->logText("observer: order is complete");
 //            }
             if ($order->getStatus() == 'processing') {
-                $this->sentOracleLogger->logText("observer: order is processing");
+//                $this->sentOracleLogger->logText("observer: order is processing");
                 $schedule = $this->scheduleFactory->create();
                 $schedule->setData('entity_id', $order->getData('entity_id'));
                 $schedule->setData('increment_id', $order->getData('increment_id'));

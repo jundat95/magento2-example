@@ -21,36 +21,37 @@ class OracleManager {
 
     public function pushOrderToOracle($order) {
 
-//        $orderJson = json_encode($order);
-//
-//        $url = 'http://oracle.local/';
-//        $ch = curl_init();
-//
-//        //set the url, number of POST vars, POST data
-//        curl_setopt($ch,CURLOPT_URL, $url);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
-//        curl_setopt($ch, CURLOPT_POST, true);
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, $orderJson);
-//
-//        // Set HTTP Header for POST request
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-//            'Content-Type: application/json',
-//            'Content-Length: ' . strlen($orderJson))
-//        );
-//
-//        // execute
-//        $response = curl_exec($ch);
-//        // close connection
-//        curl_close($ch);
+        $orderJson = json_encode($order);
 
-        // $this->sentOracleLogger->logArray($order);
+        $url = 'http://oracle.local/';
+        $ch = curl_init();
 
+        // Set the url, number of POST vars, POST data
+        curl_setopt($ch,CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $orderJson);
+
+        // Set HTTP Header for POST request
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($orderJson))
+        );
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+//        $this->sentOracleLogger->logArray($order);
 //        $this->sentOracleLogger->logArray($orderJson);
+//        $this->sentOracleLogger->logArray($response);
 
-        // $this->sentOracleLogger->logArray($response);
-        $this->sentOracleLogger->logText('Push order # to Oracle.');
+        $this->sentOracleLogger->logText('Pushing order to Oracle.');
 
-        return true;
+        $responseJson = json_decode($response);
+        if ($responseJson->status == 'true')
+            return true;
+        return false;
+
     }
 }
