@@ -14,26 +14,31 @@ class SendOrders {
     private $sentOracleLogger;
     private $orderManager;
     private $oracleManager;
+    private $scheduleManager;
 
     public function __construct(
         \Niteco\Oracle\Common\SentOracleLogger $sentOracleLogger,
         \Niteco\Oracle\Helper\OrderManager $orderManager,
-        \Niteco\Oracle\Helper\OracleManager $oracleManager
+        \Niteco\Oracle\Helper\OracleManager $oracleManager,
+        \Niteco\Oracle\Helper\ScheduleManager $scheduleManager
     )
     {
         $this->sentOracleLogger = $sentOracleLogger;
         $this->orderManager = $orderManager;
         $this->oracleManager = $oracleManager;
+        $this->scheduleManager = $scheduleManager;
     }
 
     public function execute() {
 
-        $ordersSchedule = $this->orderManager->getOrdersSchedule();
+        $ordersSchedule = $this->scheduleManager->getOrdersSchedule();
 
-        foreach ($ordersSchedule as $order) {
-            $orderData = $this->orderManager->getOrderData($order->getData('entity_id'));
+        foreach ($ordersSchedule as $orderItem) {
+            $order = $this->orderManager->getOrderById($orderItem->getData('entity_id'));
+            $orderData = $this->orderManager->getOrderData($order);
             if ($this->oracleManager->pushOrderToOracle($orderData)) {
                 $this->sentOracleLogger->logText('sent success to oracle');
+                $this->orderManager->addOrderComment('Transfer order # '.$order->getData('increment_id').' to Oracle is success', $order);
             } else {
                 $this->sentOracleLogger->logText('sent fail to oracle');
             }

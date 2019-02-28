@@ -13,19 +13,16 @@ class OrderManager {
     private $sentOracleLogger;
     protected $orderInterface;
     protected $orderCollectionFactory;
-    protected $scheduleCollectionFactory;
 
     public function __construct(
         \Niteco\Oracle\Common\SentOracleLogger $sentOracleLogger,
         \Magento\Sales\Api\Data\OrderInterface $orderInterface,
-        \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
-        \Niteco\Oracle\Model\ResourceModel\Schedule\CollectionFactory $scheduleCollectionFactory
+        \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory
     )
     {
         $this->sentOracleLogger = $sentOracleLogger;
         $this->orderInterface = $orderInterface;
         $this->orderCollectionFactory = $orderCollectionFactory;
-        $this->scheduleCollectionFactory = $scheduleCollectionFactory;
     }
 
     public function getOrders() {
@@ -46,22 +43,13 @@ class OrderManager {
         return $data;
     }
 
-    public function getOrdersSchedule() {
-        $ordersSchedule = $this->scheduleCollectionFactory->create();
-//            ->addAttributeToSelect('*');
-//            ->addFieldToFilter('status', 0);
-
-        return $ordersSchedule;
-
-    }
-
     public function getOrderById($orderId) {
         return $this->orderInterface->load($orderId);
     }
 
-    public function getOrderData($orderId) {
+    public function getOrderData($order) {
         
-        $order = $this->getOrderById($orderId);
+//        $order = $this->getOrderById($orderId);
 
         $orderData = $order->getData();
         $shippingAddress = $order->getShippingAddress()->getData();
@@ -79,18 +67,11 @@ class OrderManager {
         return $orderData;
     }
 
-    public function setStatusSentOrder($status, $order) {
-        $order->setData('sent_to_oracle', $status);
-        $order->save();
-    }
-
     public function addOrderComment($comment, $order) {
         $order->addStatusHistoryComment($comment)
             ->setIsVisibleOnFront(false)
             ->setIsCustomerNotified(false);
         $order->save();
     }
-
-
 
 }
