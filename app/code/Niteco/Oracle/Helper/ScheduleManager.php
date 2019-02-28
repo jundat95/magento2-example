@@ -20,9 +20,10 @@ class ScheduleManager {
     }
 
     public function getOrdersSchedule() {
-        $ordersSchedule = $this->scheduleCollectionFactory->create();
-//            ->addAttributeToSelect('*');
-//            ->addFieldToFilter('status', 0);
+        $ordersSchedule = $this->scheduleCollectionFactory->create()
+            ->addFieldToFilter('status', 0)
+            ->setPageSize(10)
+            ->setCurPage(1);
 
         return $ordersSchedule;
     }
