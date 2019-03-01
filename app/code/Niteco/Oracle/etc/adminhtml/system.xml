@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="niteco_oracle" translate="label" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Niteco Oracle</label>
+            <tab>sales</tab>
+            <resource>Niteco_Oracle::system_config</resource>
+
+            <group id="send_mail" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Send Mail</label>
+                <field id="niteco_oracle_email_receive" translate="email receive" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Receive</label>
+                    <comment>Enter your email receive</comment>
+                </field>
+            </group>
+
+        </section>
+    </system>
+</config>

@@ -28,6 +28,12 @@ class ScheduleManager {
         return $ordersSchedule;
     }
 
+    public function getOrdersScheduleByStatus($status) {
+        $ordersSchedule = $this->scheduleCollectionFactory->create()
+            ->addFieldToFilter('status', $status);
+        return $ordersSchedule;
+    }
+
     public function changeStatus($status, $schedule) {
         $schedule->setData('status', $status);
         $schedule->save();

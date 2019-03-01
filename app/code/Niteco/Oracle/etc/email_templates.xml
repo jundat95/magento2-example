@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template
+            id="niteco_oracle_email_template"
+            label="Niteco Oracle error notification"
+            file="email_template.html"
+            type="html"
+            module="Niteco_Oracle"
+            area="frontend"/>
+</config>
