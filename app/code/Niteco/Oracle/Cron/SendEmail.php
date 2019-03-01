@@ -14,14 +14,17 @@ class SendEmail {
 
     private $sentEmailLogger;
     private $scheduleManager;
+    private $configManager;
 
     public function __construct(
         \Niteco\Oracle\Common\SentEmailLogger $sentEmailLogger,
-        \Niteco\Oracle\Helper\ScheduleManager $scheduleManager
+        \Niteco\Oracle\Helper\ScheduleManager $scheduleManager,
+        \Niteco\Oracle\Helper\ConfigManager $configManager
     )
     {
         $this->sentEmailLogger = $sentEmailLogger;
         $this->scheduleManager = $scheduleManager;
+        $this->configManager = $configManager;
     }
 
     public function execute() {
@@ -35,8 +38,8 @@ class SendEmail {
                 $message .= '</br>';
                 $message .= '-Order # '.$schedule->getData('increment_id').'  -Message: '.$schedule->getData('message');
             }
+//            $this->configManager->sendMail($message);
             $this->sentEmailLogger->logArray($message);
-
 
         }
 
