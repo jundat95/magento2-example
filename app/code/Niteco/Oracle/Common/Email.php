@@ -12,6 +12,9 @@ use Magento\Framework\App\Helper\AbstractHelper;
 
 class Email extends AbstractHelper {
 
+    const XML_PATH_EMAIL_TEMPLATE_FIELD  = 'niteco_oracle_general_template_notification';
+    /* Here section and group refer to name of section and group where you create this field in configuration*/
+
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
@@ -110,7 +113,8 @@ class Email extends AbstractHelper {
         $template =  $this->_transportBuilder->setTemplateIdentifier($this->temp_id)
             ->setTemplateOptions(
                 [
-                    'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
+                    'area' => \Magento\Framework\App\Area::AREA_FRONTEND, /* here you can defile area and
+                                                                                 store of template for which you prepare it */
                     'store' => $this->_storeManager->getStore()->getId(),
                 ]
             )
@@ -129,15 +133,17 @@ class Email extends AbstractHelper {
      * @throws \Magento\Framework\Exception\MailException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-
-    public function sendMail($emailTemplateVariables,$senderInfo,$receiverInfo)
+    /* your send mail method*/
+    public function yourCustomMailSendMethod($emailTemplateVariables,$senderInfo,$receiverInfo)
     {
 
-        $this->temp_id = $this->getTemplateId('niteco_oracle_email_template');
+        $this->temp_id = $this->getTemplateId(self::XML_PATH_EMAIL_TEMPLATE_FIELD);
         $this->inlineTranslation->suspend();
         $this->generateTemplate($emailTemplateVariables,$senderInfo,$receiverInfo);
         $transport = $this->_transportBuilder->getTransport();
         $transport->sendMessage();
         $this->inlineTranslation->resume();
     }
+
+
 }

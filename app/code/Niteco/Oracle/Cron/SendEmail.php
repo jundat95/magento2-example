@@ -36,10 +36,10 @@ class SendEmail {
 
             foreach ($schedules as $schedule) {
                 $message .= '</br>';
-                $message .= '-Order # '.$schedule->getData('increment_id').'  -Message: '.$schedule->getData('message');
+                $message .= '-Order # '.$schedule->getData('increment_id');//.'  -Message: '.$schedule->getData('message');
             }
-//            $this->configManager->sendMail($message);
-            $this->sentEmailLogger->logArray($message);
+            $this->configManager->sendMail($message);
+//            $this->sentEmailLogger->logArray($message);
 
         }
 

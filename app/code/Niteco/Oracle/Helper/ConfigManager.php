@@ -12,7 +12,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 
 class ConfigManager extends AbstractHelper {
 
-    protected  $scopeConfig;
+    protected $scopeConfig;
     private $email;
     private $sentEmailLogger;
 
@@ -31,20 +31,34 @@ class ConfigManager extends AbstractHelper {
     }
 
     public function getEmailReceive() {
-        $emailReceive = $this->scopeConfig('send_mail', 'niteco_oracle_email_receive');
+        $emailReceive = $this->getConfig('send_mail', 'niteco_oracle_email_receive');
         return $emailReceive;
     }
 
     public function sendMail($message) {
+
+
+//        $this->sentEmailLogger->logText('Send message');
+//        $emails = $this->scopeConfig->getValue(
+//            'niteco_oracle/general/email_notifications',
+//            \Magento\Store\Model\ScopeInterface::SCOPE_STORES
+//            );
+//        $emails = $this->getConfig('general', 'email_notifications');
+//        $this->sentEmailLogger->logText('Send message: '.$emails);
+
         /**
          * Fetch the e-mail address(es)
          */
         $emails = explode(';', $this->getEmailReceive());
 
+
         /**
          * Remove any whitespace
          */
         array_walk($emails, 'trim');
+
+//        $this->sentEmailLogger->logArray($emails);
+
 
         /**
          * Fetch the general e-mail address
@@ -52,6 +66,9 @@ class ConfigManager extends AbstractHelper {
         $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
         $generalEmail   = $this->scopeConfig->getValue('trans_email/ident_general/email', $storeScope);
         $generalName  = $this->scopeConfig->getValue('trans_email/ident_general/name', $storeScope);
+
+        $this->sentEmailLogger->logArray($generalEmail);
+        $this->sentEmailLogger->logArray($generalName);
 
         /**
          * If nothing was found, use our default
@@ -80,11 +97,17 @@ class ConfigManager extends AbstractHelper {
                     'name' => 'Receiver',
                     'email' => $emailAddress
                 ];
+
+//                $this->sentEmailLogger->logText($emailTempVariables);
+//                $this->sentEmailLogger->logText($senderInfo);
+//                $this->sentEmailLogger->logText($receiverInfo);
+
                 $this->email->yourCustomMailSendMethod(
                     $emailTempVariables,
                     $senderInfo,
                     $receiverInfo
                 );
+
             } catch (Exception $e) {
                 $this->sentEmailLogger->logText($e->getMessage());
             }
@@ -103,13 +126,13 @@ class ConfigManager extends AbstractHelper {
     public function getConfig($tab, $field)
     {
         $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORES;
-        return  $this->_scopeConfig->getValue('niteco_oracle/'.$tab.'/'.$field, $storeScope);
+        return  $this->scopeConfig->getValue('niteco_oracle/'.$tab.'/'.$field, $storeScope);
 
     }
 
     public function getConfigCurrentStore($tab, $field, $storeId)
     {
-        return $this->_scopeConfig->getValue('niteco_oracle/' . $tab . '/' . $field,\Magento\Store\Model\ScopeInterface::SCOPE_STORES, $storeId);
+        return $this->scopeConfig->getValue('niteco_oracle/' . $tab . '/' . $field,\Magento\Store\Model\ScopeInterface::SCOPE_STORES, $storeId);
     }
 
 }

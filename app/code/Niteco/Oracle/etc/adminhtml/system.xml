@@ -1,28 +1,21 @@
 <?xml version="1.0"?>
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+<config
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <section id="niteco_oracle" translate="label" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="niteco_oracle" translate="label" sortOrder="1000" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Niteco Oracle</label>
             <tab>sales</tab>
             <resource>Niteco_Oracle::system_config</resource>
 
             <group id="general" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General</label>
-                <field id="niteco_oracle_cron_send_order" translate="label comment" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="cron_settings" translate="label comment" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>How often do you want the cron to run?</label>
                     <comment>Use Crontab Format (Eg. "*/5 * * * *" for every 5 minutes)</comment>
                 </field>
-            </group>
-
-            <group id="send_mail" translate="label" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
-                <label>Send Mail</label>
-                <field id="niteco_oracle_email_receive" translate="email receive" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Email receive when sent email to Oracle is error</label>
-                    <comment>Enter your email receive</comment>
-                </field>
-                <field id="niteco_oracle_cron_send_email" translate="label comment" type="text" showInDefault="2" showInWebsite="0" showInStore="0">
-                    <label>How often do you want the cron to run?</label>
-                    <comment>Use Crontab Format (Eg. "*/5 * * * *" for every 5 minutes)</comment>
+                <field id="email_notifications" translate="label comment" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Notify e-mails when error occurs</label>
+                    <comment>Leave this blank for none, multiple recipients should be separated with a ";"</comment>
                 </field>
             </group>
 
