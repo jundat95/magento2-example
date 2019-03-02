@@ -31,15 +31,11 @@ class SendEmail {
         $schedules = $this->scheduleManager->getOrdersScheduleByStatus(SentToOracleStatus::SENT_FAIL);
 
         if ($schedules->count() > 0) {
-            $message = 'List orders sent to Oracle error: ';
-            $message .= '</br>';
-
+            $message = '';
             foreach ($schedules as $schedule) {
-                $message .= '</br>';
-                $message .= '-Order # '.$schedule->getData('increment_id');//.'  -Message: '.$schedule->getData('message');
+                $message .= ' || Order # '.$schedule->getData('increment_id').' , Message: '.$schedule->getData('message');
             }
             $this->configManager->sendMail($message);
-//            $this->sentEmailLogger->logArray($message);
 
         }
 

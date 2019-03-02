@@ -38,14 +38,6 @@ class ConfigManager extends AbstractHelper {
     public function sendMail($message) {
 
 
-//        $this->sentEmailLogger->logText('Send message');
-//        $emails = $this->scopeConfig->getValue(
-//            'niteco_oracle/general/email_notifications',
-//            \Magento\Store\Model\ScopeInterface::SCOPE_STORES
-//            );
-//        $emails = $this->getConfig('general', 'email_notifications');
-//        $this->sentEmailLogger->logText('Send message: '.$emails);
-
         /**
          * Fetch the e-mail address(es)
          */
@@ -57,8 +49,6 @@ class ConfigManager extends AbstractHelper {
          */
         array_walk($emails, 'trim');
 
-//        $this->sentEmailLogger->logArray($emails);
-
 
         /**
          * Fetch the general e-mail address
@@ -67,8 +57,6 @@ class ConfigManager extends AbstractHelper {
         $generalEmail   = $this->scopeConfig->getValue('trans_email/ident_general/email', $storeScope);
         $generalName  = $this->scopeConfig->getValue('trans_email/ident_general/name', $storeScope);
 
-        $this->sentEmailLogger->logArray($generalEmail);
-        $this->sentEmailLogger->logArray($generalName);
 
         /**
          * If nothing was found, use our default
@@ -98,9 +86,6 @@ class ConfigManager extends AbstractHelper {
                     'email' => $emailAddress
                 ];
 
-//                $this->sentEmailLogger->logText($emailTempVariables);
-//                $this->sentEmailLogger->logText($senderInfo);
-//                $this->sentEmailLogger->logText($receiverInfo);
 
                 $this->email->yourCustomMailSendMethod(
                     $emailTempVariables,
