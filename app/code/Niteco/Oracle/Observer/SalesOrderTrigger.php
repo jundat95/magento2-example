@@ -10,20 +10,21 @@ namespace Niteco\Oracle\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer;
-use Niteco\Oracle\Common\SentOracleLogger;
 
-use Niteco\Oracle\Model\ScheduleFactory;
 
 class SalesOrderTrigger implements ObserverInterface {
 
     private $sentOracleLogger;
     private $scheduleFactory;
+    private $queueManager;
 
     public function __construct(
-        SentOracleLogger $sentOracleLogger,
-        ScheduleFactory $scheduleFactory
+        \Niteco\Oracle\Helper\QueueManager $queueManager,
+        \Niteco\Oracle\Common\SentOracleLogger $sentOracleLogger,
+        \Niteco\Oracle\Model\ScheduleFactory $scheduleFactory
     )
     {
+        $this->queueManager = $queueManager;
         $this->sentOracleLogger = $sentOracleLogger;
         $this->scheduleFactory = $scheduleFactory;
     }
@@ -39,12 +40,14 @@ class SalesOrderTrigger implements ObserverInterface {
 //                $this->sentOracleLogger->logText("observer: order is complete");
 //            }
             if ($order->getStatus() == 'processing') {
-//                $this->sentOracleLogger->logText("observer: order is processing");
+                // Save orderId to mysql
                 $schedule = $this->scheduleFactory->create();
                 $schedule->setData('entity_id', $order->getData('entity_id'));
                 $schedule->setData('increment_id', $order->getData('increment_id'));
                 $schedule->setIsObjectNew(true);
                 $schedule->save();
+                // Save orderId to redis
+                $this->queueManager->pushOrderId($order->getData('entity_id'));
             }
 
         }
