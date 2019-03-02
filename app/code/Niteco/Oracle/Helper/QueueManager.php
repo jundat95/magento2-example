@@ -12,18 +12,30 @@ use colinmollenhour\credis\Client;
 
 class QueueManager {
 
+    private $redis;
     private $KEY = 'nitecoqueue';
 
     public function __construct()
     {
+        $this->redis = new \Credis_Client('localhost');
     }
 
     /**
      * @param $orderId
      */
     public function pushOrderId($orderId) {
-        $redis = new \Credis_Client('localhost');
-        $redis->rPush($this->KEY, $orderId);
+
+        $this->redis->rPush($this->KEY, $orderId);
+    }
+
+
+    public function popOrderId() {
+
+        return $this->redis->rPush($this->KEY);
+    }
+
+    public function getAllOrderId() {
+        return $this->redis->lRange($this->KEY, 0, -1);
     }
 
 }

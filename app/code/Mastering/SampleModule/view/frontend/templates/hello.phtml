@@ -4,6 +4,7 @@
     echo '</br>Welcome Magento Redis</br>';
     $redis = new Redis();
     $redis->connect('127.0.0.1', 6379);
+    $key = 'nitecoqueue';
 
     echo $redis->ping();
     echo '</br>Hello hacker</br>';
@@ -13,14 +14,14 @@
 
     if ($push) {
         echo 'Run push: '.$push;
-        $redis->rPush('char', $push);
+        $redis->rPush($key, $push);
     } else if ($pop) {
         echo 'Run pop: '.$pop;
-        $redis->lPop('char');
+        $redis->lPop($key);
     }
 
     echo '</br>';
-    print_r($redis->lRange('char', 0, -1));
+    print_r($redis->lRange($key, 0, -1));
 
 
 
