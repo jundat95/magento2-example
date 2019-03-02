@@ -12,7 +12,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 
 class Email extends AbstractHelper {
 
-    const XML_PATH_EMAIL_TEMPLATE_FIELD  = 'niteco_oracle_general_template_notification';
+    const XML_PATH_EMAIL_TEMPLATE_FIELD  = 'niteco/email/send_email';
     /* Here section and group refer to name of section and group where you create this field in configuration*/
 
     /**
