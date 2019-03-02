@@ -1,19 +1,36 @@
 <?php
     /** @var \Mastering\SampleModule\Block\Hello $block */
-?>
 
-<!-- <?php foreach ($block -> getItems() as $item): ?>
-    </br> <?php echo $item->getName(); ?>  ;  <?php echo $item->getDescription(); ?>
-<?php endforeach; ?> -->
+    echo '</br>Welcome Magento Redis</br>';
+    $redis = new Redis();
+    $redis->connect('127.0.0.1', 6379);
 
-<?php
-    echo '</br></br>';
+    echo $redis->ping();
+    echo '</br>Hello hacker</br>';
 
-    $ordersNew = $block-> getAllOrders() -> getData();
+    $push = isset($_GET['push']) ? $_GET['push'] : false;
+    $pop = isset($_GET['pop']) ? $_GET['pop'] : false;
 
-    echo '<pre>';
-    print_r($ordersNew);
-    echo '</pre>';
+    if ($push) {
+        echo 'Run push: '.$push;
+        $redis->rPush('char', $push);
+    } else if ($pop) {
+        echo 'Run pop: '.$pop;
+        $redis->lPop('char');
+    }
+
+    echo '</br>';
+    print_r($redis->lRange('char', 0, -1));
+
+
+
+
+
+//    $ordersNew = $block-> getAllOrders() -> getData();
+
+//    echo '<pre>';
+//    print_r($ordersNew);
+//    echo '</pre>';
 
     // echo '<pre>';
     // print_r(gettype($ordersNew));
@@ -31,13 +48,13 @@
         // }
     // echo '</pre>';
 
-    // $datanew = $block-> getAllOrders() -> getData()[2];
+//     $datanew = $block-> getAllOrders() -> getData()[2];
 //    echo '<pre>';
-    // print_r(gettype($datanew));
-    // print_r(get_class_methods($datanew));
-    // print_r(get_object_vars($datanew));
+//     print_r(gettype($datanew));
+//     print_r(get_class_methods($datanew));
+//     print_r(get_object_vars($datanew));
 //    echo '</pre>';
-
+//
 //    $order = 1;
 //    if (isset($_GET['order'])) {
 //        $order = $_GET['order'];
@@ -67,37 +84,37 @@
 //        print_r($item->getPrice());
 //    }
     
-    // echo '</br></br>';
+//     echo '</br></br>';
 
 
-    echo '<pre>';
-
-    foreach($ordersNew as $order) {
-        $result = $block->getOrderById($order['entity_id']);
-        // print_r($result->getData());
-        $result->setData('sent_to_oracle', 0);
-        $result->save();
-
-        $orderData = $result->getData();
-        $shippingAddress = $result->getShippingAddress()->getData();
-        $billingAddress = $result->getBillingAddress()->getData();
-        $orderData['shippingAddress'] = $shippingAddress;
-        $orderData['billingAddress'] = $billingAddress;
-        
-        $allItems = [];
-        $allItemsResult = $result->getAllItems();
-        foreach($allItemsResult as $item) {
-            // var_dump($item);
-            array_push($allItems, $item->getData());
-            print_r(gettype($item));
-            print_r(get_class_methods($item));
-            print_r(get_object_vars($item));
-        }
-        $orderData['allItems'] = $allItems;
-
-        echo "<script>console.log(".json_encode($orderData).");</script>";
-    }
-
-    echo '</pre>';
+//    echo '<pre>';
+//
+//    foreach($ordersNew as $order) {
+//        $result = $block->getOrderById($order['entity_id']);
+//        // print_r($result->getData());
+//        $result->setData('sent_to_oracle', 0);
+//        $result->save();
+//
+//        $orderData = $result->getData();
+//        $shippingAddress = $result->getShippingAddress()->getData();
+//        $billingAddress = $result->getBillingAddress()->getData();
+//        $orderData['shippingAddress'] = $shippingAddress;
+//        $orderData['billingAddress'] = $billingAddress;
+//
+//        $allItems = [];
+//        $allItemsResult = $result->getAllItems();
+//        foreach($allItemsResult as $item) {
+//            // var_dump($item);
+//            array_push($allItems, $item->getData());
+//            print_r(gettype($item));
+//            print_r(get_class_methods($item));
+//            print_r(get_object_vars($item));
+//        }
+//        $orderData['allItems'] = $allItems;
+//
+//        echo "<script>console.log(".json_encode($orderData).");</script>";
+//    }
+//
+//    echo '</pre>';
 
 
