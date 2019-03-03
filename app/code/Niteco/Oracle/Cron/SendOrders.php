@@ -17,6 +17,7 @@ class SendOrders {
     private $orderManager;
     private $oracleManager;
     private $scheduleManager;
+    private $queueManager;
     private $timezoneInterface;
 
     public function __construct(
@@ -24,6 +25,7 @@ class SendOrders {
         \Niteco\Oracle\Helper\OrderManager $orderManager,
         \Niteco\Oracle\Helper\OracleManager $oracleManager,
         \Niteco\Oracle\Helper\ScheduleManager $scheduleManager,
+        \Niteco\Oracle\Helper\QueueManager $queueManager,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface
     )
     {
@@ -31,11 +33,58 @@ class SendOrders {
         $this->orderManager = $orderManager;
         $this->oracleManager = $oracleManager;
         $this->scheduleManager = $scheduleManager;
+        $this->queueManager = $queueManager;
         $this->timezoneInterface = $timezoneInterface;
     }
 
     public function execute() {
 
+        $this->sendOrdersWithRedis();
+
+    }
+
+    public function sendOrdersWithRedis() {
+
+        $orderId = $this->queueManager->popOrderId();
+        if ($orderId) {
+            $this->sentOracleLogger->logText('id: '.$orderId);
+
+            // get order
+            $order = $this->orderManager->getOrderById($orderId);
+            $orderData = $this->orderManager->getOrderData($order);
+
+            // get order schedule
+            $schedules = $this->scheduleManager->getOrdersScheduleById($orderId);
+            $schedule = $schedules->getFirstItem();
+
+            $this->scheduleManager->changeStatus(SentToOracleStatus::SENDING, $schedule);
+            $currentTime = $this->timezoneInterface->date()->getTimestamp();
+            $this->scheduleManager->changeTimeExecute($currentTime, $schedule);
+
+            if ($this->oracleManager->pushOrderToOracle($orderData)) {
+                $this->sentOracleLogger->logText('Sent order '.$orderId.' to Oracle is success');
+
+                $this->orderManager->addOrderComment('Transfer order # '.$orderId.' to Oracle is success', $order);
+                $this->scheduleManager->changeStatus(SentToOracleStatus::SENT_SUCCESS, $schedule);
+                $currentTime = $this->timezoneInterface->date()->getTimestamp();
+                $this->scheduleManager->changeTimeFinished($currentTime, $schedule);
+            } else {
+                $this->sentOracleLogger->logText('Sent order '.$orderId.' to Oracle is fail');
+
+                $this->scheduleManager->changeStatus(SentToOracleStatus::SENT_FAIL, $schedule);
+                $this->scheduleManager->setMessage('Sent order '.$orderId.' to Oracle is fail', $schedule);
+
+                // add orderId to queue
+                $this->queueManager->pushOrderId($orderId);
+            }
+
+        } else {
+            $this->sentOracleLogger->logText('queue is empty');
+        }
+
+    }
+
+    public function sendOrdersWithMySQL() {
         $schedules = $this->scheduleManager->getOrdersSchedule();
 
         foreach ($schedules as $schedule) {
@@ -62,7 +111,6 @@ class SendOrders {
                 $this->scheduleManager->setMessage('Sent order '.$orderId.' to Oracle is fail', $schedule);
             }
         }
-
-
     }
+
 }

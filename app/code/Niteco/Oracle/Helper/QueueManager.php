@@ -31,11 +31,12 @@ class QueueManager {
 
     public function popOrderId() {
 
-        return $this->redis->rPush($this->KEY);
+        return $this->redis->lPop($this->KEY);
     }
 
     public function getAllOrderId() {
         return $this->redis->lRange($this->KEY, 0, -1);
     }
+
 
 }

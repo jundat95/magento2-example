@@ -28,6 +28,12 @@ class ScheduleManager {
         return $ordersSchedule;
     }
 
+    public function getOrdersScheduleById($orderId) {
+        $ordersSchedule = $this->scheduleCollectionFactory->create()
+            ->addFieldToFilter('entity_id', $orderId);
+        return $ordersSchedule;
+    }
+
     public function getOrdersScheduleByStatus($status) {
         $ordersSchedule = $this->scheduleCollectionFactory->create()
             ->addFieldToFilter('status', $status);

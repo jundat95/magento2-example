@@ -16,8 +16,8 @@
         echo 'Run push: '.$push;
         $redis->rPush($key, $push);
     } else if ($pop) {
-        echo 'Run pop: '.$pop;
-        $redis->lPop($key);
+        echo 'Run pop: '.$pop.'</br>';
+        echo $redis->lPop($key);
     }
 
     echo '</br>';
