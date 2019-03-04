@@ -127,4 +127,14 @@ class ConfigManager extends AbstractHelper {
         return $this->scopeConfig->getValue('niteco_oracle/' . $tab . '/' . $field,\Magento\Store\Model\ScopeInterface::SCOPE_STORES, $storeId);
     }
 
+    public function getGeneralEmail() {
+        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
+        return $this->scopeConfig->getValue('trans_email/ident_general/email', $storeScope);
+    }
+
+    public function getGeneralName() {
+        $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
+        return $this->scopeConfig->getValue('trans_email/ident_general/name', $storeScope);
+    }
+
 }
