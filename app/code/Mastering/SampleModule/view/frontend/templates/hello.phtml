@@ -1,29 +1,39 @@
 <?php
     /** @var \Mastering\SampleModule\Block\Hello $block */
 
+    use colinmollenhour\credis\Client;
+
     echo '</br>Welcome Magento Redis</br>';
-    $redis = new Redis();
-    $redis->connect('127.0.0.1', 6379);
-    $key = 'nitecoqueue';
 
-    echo $redis->ping();
-    echo '</br>Hello hacker</br>';
 
-    $push = isset($_GET['push']) ? $_GET['push'] : false;
-    $pop = isset($_GET['pop']) ? $_GET['pop'] : false;
+    try {
+        $key = 'nitecoqueue';
 
-    if ($push) {
-        echo 'Run push: '.$push;
-        $redis->rPush($key, $push);
-    } else if ($pop) {
-        echo 'Run pop: '.$pop.'</br>';
-        echo $redis->lPop($key);
+        $redis = new Credis_Client('localhost');
+        if (!$redis->isConnected()) {
+            echo 'Cannot connect to redis-server';
+        }
+
+        echo $redis->ping();
+        echo '</br>Hello hacker</br>';
+
+        $push = isset($_GET['push']) ? $_GET['push'] : false;
+        $pop = isset($_GET['pop']) ? $_GET['pop'] : false;
+
+        if ($push) {
+            echo 'Run push: '.$push;
+            $redis->rPush($key, $push);
+        } else if ($pop) {
+            echo 'Run pop: '.$pop.'</br>';
+            echo $redis->lPop($key);
+        }
+
+        echo '</br>';
+        print_r($redis->lRange($key, 0, -1));
+
+    } catch (CredisException $e) {
+        echo 'Cannot connect to RedisServer';
     }
-
-    echo '</br>';
-    print_r($redis->lRange($key, 0, -1));
-
-
 
 
 

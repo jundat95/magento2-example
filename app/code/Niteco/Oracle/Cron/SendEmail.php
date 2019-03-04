@@ -36,7 +36,6 @@ class SendEmail {
                 $message .= ' || Order # '.$schedule->getData('increment_id').' , Message: '.$schedule->getData('message');
             }
             $this->configManager->sendMail($message);
-
         }
 
     }

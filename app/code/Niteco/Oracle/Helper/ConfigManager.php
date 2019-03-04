@@ -37,7 +37,6 @@ class ConfigManager extends AbstractHelper {
 
     public function sendMail($message) {
 
-
         /**
          * Fetch the e-mail address(es)
          */
