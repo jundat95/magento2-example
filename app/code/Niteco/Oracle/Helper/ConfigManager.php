@@ -35,6 +35,14 @@ class ConfigManager extends AbstractHelper {
         return $emailReceive;
     }
 
+    public function isSendOrderEnable() {
+        return $this->getConfig('general', 'enabled');
+    }
+
+    public function isSendMailEnable() {
+        return $this->getConfig('send_mail', 'enabled');
+    }
+
     public function sendMail($message) {
 
         /**

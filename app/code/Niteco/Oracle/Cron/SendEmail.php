@@ -28,6 +28,13 @@ class SendEmail {
     }
 
     public function execute() {
+
+        $isEnableMail = $this->configManager->isSendMailEnable();
+        $this->sentEmailLogger->logText($isEnableMail);
+        $this->sentEmailLogger->logText(gettype($isEnableMail));
+
+        if ($isEnableMail === "0") return;
+
         $schedules = $this->scheduleManager->getOrdersScheduleByStatus(SentToOracleStatus::SENT_FAIL);
 
         if ($schedules->count() > 0) {

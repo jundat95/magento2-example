@@ -19,6 +19,7 @@ class SendOrders {
     private $scheduleManager;
     private $queueManager;
     private $timezoneInterface;
+    private $configManager;
 
     public function __construct(
         \Niteco\Oracle\Common\SentOracleLogger $sentOracleLogger,
@@ -26,6 +27,7 @@ class SendOrders {
         \Niteco\Oracle\Helper\OracleManager $oracleManager,
         \Niteco\Oracle\Helper\ScheduleManager $scheduleManager,
         \Niteco\Oracle\Helper\QueueManager $queueManager,
+        \Niteco\Oracle\Helper\ConfigManager $configManager,
         \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface
     )
     {
@@ -34,10 +36,14 @@ class SendOrders {
         $this->oracleManager = $oracleManager;
         $this->scheduleManager = $scheduleManager;
         $this->queueManager = $queueManager;
+        $this->configManager = $configManager;
         $this->timezoneInterface = $timezoneInterface;
     }
 
     public function execute() {
+
+        $isSendOrderEnable = $this->configManager->isSendOrderEnable();
+        if ($isSendOrderEnable === "0") return;
 
         $this->sendOrdersWithRedis();
 
