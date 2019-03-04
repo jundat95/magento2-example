@@ -43,7 +43,7 @@ class SendOrders {
     public function execute() {
 
         $isSendOrderEnable = $this->configManager->isSendOrderEnable();
-        if ($isSendOrderEnable === "0") return;
+        if (empty($isSendOrderEnable) || $isSendOrderEnable === "0") return;
 
         $this->sendOrdersWithRedis();
 
