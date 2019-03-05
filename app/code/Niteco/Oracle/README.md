@@ -3,6 +3,7 @@
 Niteco Oracle help us send order to Oracle 
 
 ## Requirement
+1. Magento v2.3.0
 1. Enable Redis cache
 2. Enable send email default
 ## Install
@@ -25,8 +26,13 @@ php bin/magento cache:flush
 3. Input email to: Notify e-mails when error occurs
 
 4. Change email default, go to: Stores -> General -> Store Email Addresse
-5. Change email -> save
+5. Go to: General Contact and Change email -> save
 
+## Show queues
+Use command
+```bash
+    php bin/magento niteco:oracle:queues
+```
 
 ## Check log
 File log save with name: 

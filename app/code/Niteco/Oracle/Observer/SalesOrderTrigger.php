@@ -32,6 +32,11 @@ class SalesOrderTrigger implements ObserverInterface {
     public function execute(Observer $observer)
     {
         $order = $observer->getEvent()->getOrder();
+        $storeId = $order->getData('store_id');
+
+        // Validate store US
+        if ($storeId !== '3') return;
+
         if ($order instanceof \Magento\Framework\Model\AbstractModel) {
 //            if ($order->getStatus() == 'pending') {
 //                $this->sentOracleLogger->logText("observer: order is new");
