@@ -14,17 +14,22 @@ use Magento\Framework\Event\Observer;
 
 class SalesOrderTrigger implements ObserverInterface {
 
+    private $STORE_ID = '1';
+
     private $sentOracleLogger;
+    private $configManager;
     private $scheduleFactory;
     private $queueManager;
 
     public function __construct(
         \Niteco\Oracle\Helper\QueueManager $queueManager,
+        \Niteco\Oracle\Helper\ConfigManager $configManager,
         \Niteco\Oracle\Common\SentOracleLogger $sentOracleLogger,
         \Niteco\Oracle\Model\ScheduleFactory $scheduleFactory
     )
     {
         $this->queueManager = $queueManager;
+        $this->configManager = $configManager;
         $this->sentOracleLogger = $sentOracleLogger;
         $this->scheduleFactory = $scheduleFactory;
     }
@@ -35,7 +40,10 @@ class SalesOrderTrigger implements ObserverInterface {
         $storeId = $order->getData('store_id');
 
         // Validate store US
-        if ($storeId !== '3') return;
+        if (!empty($this->configManager->getRedisStoreId()) && is_numeric($this->configManager->getRedisStoreId())) {
+            $this->STORE_ID = $this->configManager->getRedisStoreId();
+        }
+        if ($storeId !== $this->STORE_ID) return;
 
         if ($order instanceof \Magento\Framework\Model\AbstractModel) {
 //            if ($order->getStatus() == 'pending') {

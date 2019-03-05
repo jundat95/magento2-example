@@ -33,7 +33,7 @@
 
                 <field id="store_id" translate="label" type="text"  showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Store ID</label>
-                    <comment>Example: Store US = 1, Store SE = 2</comment>
+                    <comment>Default Store US = 1</comment>
                 </field>
 
             </group>
