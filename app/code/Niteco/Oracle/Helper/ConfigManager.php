@@ -27,9 +27,28 @@ class ConfigManager extends AbstractHelper {
         parent::__construct($context);
     }
 
+    public function getRedisHost() {
+        return $this->getConfig('general', 'redis_host');
+    }
+
+    public function getRedisPort() {
+        return $this->getConfig('general', 'redis_port');
+    }
+
+    public function getRedisPassword() {
+        return $this->getConfig('general', 'redis_password');
+    }
+
+    public function getRedisQueueKey() {
+        return $this->getConfig('general', 'queue_key');
+    }
+
+    public function getRedisStoreId() {
+        return $this->getConfig('general', 'store_id');
+    }
+
     public function getEmailReceive() {
-        $emailReceive = $this->getConfig('send_mail', 'niteco_oracle_email_receive');
-        return $emailReceive;
+        return $this->getConfig('send_mail', 'email_receive');
     }
 
     public function isSendOrderEnable() {

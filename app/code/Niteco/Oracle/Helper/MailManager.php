@@ -35,7 +35,7 @@ class MailManager {
          */
         $emails = explode(';', $this->configManager->getEmailReceive());
 
-        $this->sentEmailLogger->logText($emails);
+        $this->sentEmailLogger->logArray('Send email to: '.$emails);
 
         /**
          * Remove any whitespace
@@ -49,8 +49,8 @@ class MailManager {
         $generalEmail   = $this->configManager->getGeneralEmail();
         $generalName  = $this->configManager->getGeneralEmail();
 
-        $this->sentEmailLogger->logText($generalEmail);
-        $this->sentEmailLogger->logText($generalName);
+//        $this->sentEmailLogger->logText($generalEmail);
+//        $this->sentEmailLogger->logText($generalName);
 
         /**
          * If nothing was found, use our default

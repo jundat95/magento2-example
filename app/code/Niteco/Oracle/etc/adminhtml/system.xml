@@ -13,6 +13,29 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+
+                <field id="redis_host" translate="label" type="text"  showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Redis Host</label>
+                    <comment>Example: localhost</comment>
+                </field>
+                <field id="redis_port" translate="label" type="text"  showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Redis Port</label>
+                    <comment>Example port: 6379</comment>
+                </field>
+                <field id="redis_password" translate="label" type="password"  showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Redis Password</label>
+                    <comment>Password connect to server redis-cache</comment>
+                </field>
+                <field id="queue_key" translate="label" type="text"  showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Queue Key</label>
+                    <comment>Queue Key example: nitecoqueue</comment>
+                </field>
+
+                <field id="store_id" translate="label" type="text"  showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Store ID</label>
+                    <comment>Example: Store US = 1, Store SE = 2</comment>
+                </field>
+
             </group>
 
             <group id="send_mail" translate="label" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -21,7 +44,7 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="niteco_oracle_email_receive" translate="label comment" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="email_receive" translate="label comment" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Notify e-mails when error occurs</label>
                     <comment>Leave this blank for none, multiple recipients should be separated with a ";"</comment>
                 </field>
