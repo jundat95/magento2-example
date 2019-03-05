@@ -2,6 +2,9 @@
 
 Niteco Oracle help us send order to Oracle 
 
+## Requirement
+1. Enable Redis cache
+2. Enable send email default
 ## Install
 
 1. Create folder in magento2 project: /app/Niteco/Oracle
