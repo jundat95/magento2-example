@@ -29,7 +29,7 @@ php bin/magento cache:flush
 5. Go to: General Contact and Change email -> save
 
 ## Show queues
-Use command
+Use command check redis work, and show queues
 ```bash
     php bin/magento niteco:oracle:queues
 ```
