@@ -34,8 +34,27 @@ Use command
     php bin/magento niteco:oracle:queues
 ```
 
+## Check data
+
+*Go to mysql admin, use database*
+
+1. Check status order
+
+User query
+```bash
+select * from niteco_oracle_schedule;
+```
+
+2. Check CronJob message, status, time
+
+```bash
+select * from cron_schedule where job_code like '%NitecoOracleSendOrders%';
+
+select * from cron_schedule where job_code like '%NitecoOracleSendEmail%';
+```
+
 ## Check log
 File log save with name: 
-  1. /project-name/var/log/niteco_oracle_sent_email.log
-  2. /project-name/var/log/niteco_oracle_sent_oracle.log
+1. /project-name/var/log/niteco_oracle_sent_email.log
+2. /project-name/var/log/niteco_oracle_sent_oracle.log
 

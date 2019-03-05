@@ -85,7 +85,7 @@ class SendOrders {
             }
 
         } else {
-//            $this->sentOracleLogger->logText('queue is empty');
+            $this->sentOracleLogger->logText('queue is empty');
         }
 
     }
