@@ -30,12 +30,13 @@ class MailManager {
 
     public function sendMail($message) {
 
+        $sendSuccess = true;
+
         /**
          * Fetch the e-mail address(es)
          */
         $emails = explode(';', $this->configManager->getEmailReceive());
 
-        $this->sentEmailLogger->logArray('Send email to: '.$emails);
 
         /**
          * Remove any whitespace
@@ -89,9 +90,11 @@ class MailManager {
 
             } catch (Exception $e) {
                 $this->sentEmailLogger->logText($e->getMessage());
+                $sendSuccess = false;
             }
         }
 
+        return $sendSuccess;
     }
 
 }

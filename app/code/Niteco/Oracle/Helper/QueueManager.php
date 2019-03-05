@@ -36,19 +36,19 @@ class QueueManager {
 
         if (!empty($this->configManager->getRedisHost())) {
             $this->HOST = $this->configManager->getRedisHost();
-            $this->sentOracleLogger->logText($this->HOST);
+//            $this->sentOracleLogger->logText($this->HOST);
         }
         if (!empty($this->configManager->getRedisPort()) && is_numeric($this->configManager->getRedisPort())) {
             $this->PORT = (int)$this->configManager->getRedisPort();
-            $this->sentOracleLogger->logText($this->PORT);
+//            $this->sentOracleLogger->logText($this->PORT);
         }
         if (!empty($this->configManager->getRedisPassword())) {
             $this->PSSWD = $this->configManager->getRedisPassword();
-            $this->sentOracleLogger->logText($this->PSSWD);
+//            $this->sentOracleLogger->logText($this->PSSWD);
         }
         if (!empty($this->configManager->getRedisQueueKey())) {
             $this->KEY = $this->configManager->getRedisQueueKey();
-            $this->sentOracleLogger->logText($this->KEY);
+//            $this->sentOracleLogger->logText($this->KEY);
         }
 
         try {

@@ -42,7 +42,11 @@ class SendEmail {
             foreach ($schedules as $schedule) {
                 $message .= ' || Order # '.$schedule->getData('increment_id').' , Message: '.$schedule->getData('message');
             }
-            $this->mailManager->sendMail($message);
+            if ($this->mailManager->sendMail($message)) {
+                foreach ($schedules as $schedule) {
+                    $this->scheduleManager->changeStatus(SentToOracleStatus::REPORTED, $schedule);
+                }
+            }
         }
 
     }
