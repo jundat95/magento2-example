@@ -7,7 +7,7 @@ Niteco Oracle help us send order to Oracle
 2. Enable send email default
 ## Install
 
-1. Create folder in magento2 project: /app/Niteco/Oracle
+1. Create folder in magento2 project: /app/code/Niteco/Oracle
 2. `git clone https://github.com/tinh-ngo-niteco/niteco-oracle.git`
 3. Copy code to folder: /app/Niteco/Oracle
 4. Run command in project
