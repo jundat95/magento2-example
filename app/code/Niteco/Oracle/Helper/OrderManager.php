@@ -11,18 +11,18 @@ namespace Niteco\Oracle\Helper;
 class OrderManager {
 
     private $sentOracleLogger;
-    protected $orderInterface;
     protected $orderCollectionFactory;
+    protected $orderRepository;
 
     public function __construct(
         \Niteco\Oracle\Common\SentOracleLogger $sentOracleLogger,
-        \Magento\Sales\Api\Data\OrderInterface $orderInterface,
-        \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory
+        \Magento\Sales\Model\ResourceModel\Order\CollectionFactory $orderCollectionFactory,
+        \Magento\Sales\Model\OrderRepository $orderRepository
     )
     {
         $this->sentOracleLogger = $sentOracleLogger;
-        $this->orderInterface = $orderInterface;
         $this->orderCollectionFactory = $orderCollectionFactory;
+        $this->orderRepository = $orderRepository;
     }
 
     public function getOrders() {
@@ -44,7 +44,7 @@ class OrderManager {
     }
 
     public function getOrderById($orderId) {
-        return $this->orderInterface->load($orderId);
+        return $this->orderRepository->get($orderId);
     }
 
     public function getOrderData($order) {

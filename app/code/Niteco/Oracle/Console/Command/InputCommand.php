@@ -27,13 +27,23 @@ class InputCommand extends Command {
     private $configManager;
     private $mailManager;
 
+    private $sentOracleLogger;
+    private $orderManager;
+    private $oracleManager;
+    private $timezoneInterface;
+
     public function __construct(
         \Magento\Framework\App\State $state,
         \Niteco\Oracle\Helper\QueueManager $queueManager,
 
         \Niteco\Oracle\Helper\ScheduleManager $scheduleManager,
         \Niteco\Oracle\Helper\ConfigManager $configManager,
-        \Niteco\Oracle\Helper\MailManager $mailManager
+        \Niteco\Oracle\Helper\MailManager $mailManager,
+
+        \Niteco\Oracle\Common\SentOracleLogger $sentOracleLogger,
+        \Niteco\Oracle\Helper\OrderManager $orderManager,
+        \Niteco\Oracle\Helper\OracleManager $oracleManager,
+        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $timezoneInterface
     )
     {
         $this->state = $state;
@@ -42,6 +52,12 @@ class InputCommand extends Command {
         $this->scheduleManager = $scheduleManager;
         $this->configManager = $configManager;
         $this->mailManager = $mailManager;
+
+        $this->sentOracleLogger = $sentOracleLogger;
+        $this->orderManager = $orderManager;
+        $this->oracleManager = $oracleManager;
+        $this->queueManager = $queueManager;
+        $this->timezoneInterface = $timezoneInterface;
 
         parent::__construct();
     }
@@ -71,8 +87,10 @@ class InputCommand extends Command {
             $output->writeln('sending email');
             $this->sendEmails();
         }
-//        if ($commandName === 'sendorders') {
-//        }
+        if ($commandName === 'sendorders') {
+            $output->writeln('sending order');
+            $this->sendOrdersWithRedis();
+        }
         return Cli::RETURN_SUCCESS;
     }
 
@@ -93,6 +111,46 @@ class InputCommand extends Command {
                 }
             }
         }
+    }
+
+    public function sendOrdersWithRedis() {
+
+        $orderId = $this->queueManager->popOrderId();
+        if ($orderId) {
+
+            // get order
+            $order = $this->orderManager->getOrderById($orderId);
+            $orderData = $this->orderManager->getOrderData($order);
+
+            // get order schedule
+            $schedules = $this->scheduleManager->getOrdersScheduleById($orderId);
+            $schedule = $schedules->getFirstItem();
+
+            $this->scheduleManager->changeStatus(SentToOracleStatus::SENDING, $schedule);
+            $currentTime = $this->timezoneInterface->date()->getTimestamp();
+            $this->scheduleManager->changeTimeExecute($currentTime, $schedule);
+
+            if ($this->oracleManager->pushOrderToOracle($orderData)) {
+                $this->sentOracleLogger->logText('Sent order '.$orderId.' to Oracle is success');
+
+                $this->orderManager->addOrderComment('Transferred to Oracle', $order);
+                $this->scheduleManager->changeStatus(SentToOracleStatus::SENT_SUCCESS, $schedule);
+                $currentTime = $this->timezoneInterface->date()->getTimestamp();
+                $this->scheduleManager->changeTimeFinished($currentTime, $schedule);
+            } else {
+                $this->sentOracleLogger->logText('Sent order '.$orderId.' to Oracle is fail');
+
+                $this->scheduleManager->changeStatus(SentToOracleStatus::SENT_FAIL, $schedule);
+                $this->scheduleManager->setMessage('Sent order '.$orderId.' to Oracle is fail', $schedule);
+
+                // add orderId to queue
+                $this->queueManager->pushOrderId($orderId);
+            }
+
+        } else {
+            $this->sentOracleLogger->logText('queue is empty');
+        }
+
     }
 
 }
