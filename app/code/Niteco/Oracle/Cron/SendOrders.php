@@ -53,7 +53,6 @@ class SendOrders {
 
         $orderId = $this->queueManager->popOrderId();
         if ($orderId) {
-//            $this->sentOracleLogger->logText('id: '.$orderId);
 
             // get order
             $order = $this->orderManager->getOrderById($orderId);
