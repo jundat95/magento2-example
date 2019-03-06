@@ -69,7 +69,7 @@ class SendOrders {
             if ($this->oracleManager->pushOrderToOracle($orderData)) {
                 $this->sentOracleLogger->logText('Sent order '.$orderId.' to Oracle is success');
 
-                $this->orderManager->addOrderComment('Transfer order # '.$orderId.' to Oracle is success', $order);
+                $this->orderManager->addOrderComment('Transferred to Oracle', $order);
                 $this->scheduleManager->changeStatus(SentToOracleStatus::SENT_SUCCESS, $schedule);
                 $currentTime = $this->timezoneInterface->date()->getTimestamp();
                 $this->scheduleManager->changeTimeFinished($currentTime, $schedule);

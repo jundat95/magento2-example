@@ -54,7 +54,7 @@ class QueueManager {
         try {
             $this->redis = new \Credis_Client($this->HOST, $this->PORT);
             if (!empty($this->PSSWD)) {
-                $this->sentOracleLogger->logText('run with pass: '.$this->PSSWD);
+//                $this->sentOracleLogger->logText('run with pass: '.$this->PSSWD);
                 $this->redis->auth($this->PSSWD);
             }
         } catch (CredisException $exception) {
