@@ -11,6 +11,7 @@ namespace Niteco\Oracle\Helper;
 class OracleManager {
 
     private $sentOracleLogger;
+    private $url = 'https://2074147.restlets.api.netsuite.com/app/site/hosting/restlet.nl?script=78&deploy=1';
 
     public function __construct(
         \Niteco\Oracle\Common\SentOracleLogger $sentOracleLogger
@@ -21,37 +22,45 @@ class OracleManager {
 
     public function pushOrderToOracle($order) {
 
-//        $orderJson = json_encode($order);
-//
-//        $url = 'http://oracle.local/';
-//        $ch = curl_init();
-//
-//        // Set the url, number of POST vars, POST data
-//        curl_setopt($ch,CURLOPT_URL, $url);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
-//        curl_setopt($ch, CURLOPT_POST, true);
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, $orderJson);
-//
-//        // Set HTTP Header for POST request
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-//            'Content-Type: application/json',
-//            'Content-Length: ' . strlen($orderJson))
-//        );
-//
-//        $response = curl_exec($ch);
-//        curl_close($ch);
+        $orderJson = json_encode($order);
+
+        $ch = curl_init();
+
+        $headers=  array(
+            'cache-control:no-cache',
+            'Authorization:NLAuth nlauth_account=2074147, nlauth_email=netsuite@claremont.se, nlauth_signature=Integration1, nlauth_role=1004',
+            'Content-Type:application/json'
+        );
+
+        // Set the url, number of POST vars, POST data
+        curl_setopt($ch,CURLOPT_URL, $this->url);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $orderJson);
+
+        // Set HTTP Header for POST request
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $this->sentOracleLogger->logText($response);
 
 //        $this->sentOracleLogger->logArray($order);
 //        $this->sentOracleLogger->logArray($orderJson);
 //        $this->sentOracleLogger->logArray($response);
 
-        $this->sentOracleLogger->logText('Pushing order to Oracle.');
+        $random = random_int(0, 1);
+        $status = $random ? true : false;
+        $responseJson = json_decode('{"success":'.$status.',"orderID":null,"error_message":"failed reason"}');
 
-//        $responseJson = json_decode($response);
-//        if ($responseJson->status == 'true')
-//            return true;
-        return true;
+        if ($responseJson->success)
+            return true;
+        return false;
 
     }
 }
