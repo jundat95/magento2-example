@@ -80,15 +80,13 @@ class InputCommand extends Command {
         $commandName = $input->getArgument(self::INPUT_KEY_NAME);
         if ($commandName === 'queues') {
             $queues = $this->queueManager->getAllOrderId();
-            $output->writeln('Niteco: ');
+            $output->writeln('List queues: ');
             $output->writeln($queues);
         }
         if ($commandName === 'sendmails') {
-            $output->writeln('sending email');
             $this->sendEmails();
         }
         if ($commandName === 'sendorders') {
-            $output->writeln('sending order');
             $this->sendOrdersWithRedis();
         }
         return Cli::RETURN_SUCCESS;

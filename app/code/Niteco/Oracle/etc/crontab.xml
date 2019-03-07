@@ -2,10 +2,10 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="niteco">
         <job name="NitecoOracleSendOrders" instance="Niteco\Oracle\Cron\SendOrders" method="execute">
-            <schedule>* * * * *</schedule>
+            <schedule>* * * 12 *</schedule>
         </job>
         <job name="NitecoOracleSendEmail" instance="Niteco\Oracle\Cron\SendEmail" method="execute">
-            <schedule>* * * * *</schedule>
+            <schedule>* * * 12 *</schedule>
         </job>
     </group>
 </config>

@@ -1,6 +1,6 @@
 # Niteco Oracle Extension
 
-Niteco Oracle help us send order to Oracle 
+Niteco Oracle help us send orders to Oracle 
 
 ## Requirement
 1. Magento v2.3.0
@@ -9,7 +9,7 @@ Niteco Oracle help us send order to Oracle
 ## Install
 
 1. Create folder in magento2 project: /app/code/Niteco/Oracle
-2. `git clone https://github.com/tinh-ngo-niteco/niteco-oracle.git`
+2. Clone github: `git clone https://github.com/tinh-ngo-niteco/niteco-oracle.git`
 3. Copy code to folder: /app/Niteco/Oracle
 4. Run command in project
 ```bash
@@ -21,17 +21,43 @@ php bin/magento cache:flush
 
 ## Use
 
-1. Go to admin page: Stores -> Configurations -> Sales -> Niteco Oracle
-2. Enable: Send Order To Oracle, Send EMail When Error
+1. Go to admin page: *Stores -> Configurations -> Sales -> Niteco Oracle*
+2. Enable: Send order to Oracle, Send email when error
 3. Input email to: Notify e-mails when error occurs
 
-4. Change email default, go to: Stores -> General -> Store Email Addresse
-5. Go to: General Contact and Change email -> save
+4. Change email default, go to: *Stores -> Configurations -> General -> Store Email Address*
+5. Go to: General Contact and change email
+6. Save
 
-## Show queues
-Use command check redis work, and show queues
+# Config crontab
+
+1. Open file: /project-name/app/code/Niteco/Oracle/etc/crontab.xml
+2. Change time schedule
 ```bash
-    php bin/magento niteco:oracle:queues
+<job name="NitecoOracleSendOrders" instance="Niteco\Oracle\Cron\SendOrders" method="execute">
+    <schedule>* * * * *</schedule>
+</job>
+```
+
+# Change config cron groups
+
+1. Go to admin page: *Stores -> Configurations -> Advanced -> System*
+2. Go to niteco groups
+3. Change config
+4. Save 
+
+## Command line
+### Use command check redis work, and show queues
+```bash
+    php bin/magento niteco:oracle queues
+```
+### Send orders
+```bash
+    php bin/magento niteco:oracle sendorders
+```
+### Send email
+```bash
+    php bin/magento niteco:oracle sendmails
 ```
 
 ## Check data

@@ -8,7 +8,7 @@
             <resource>Niteco_Oracle::system_config</resource>
 
             <group id="general" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Send Order To Oracle</label>
+                <label>Send orders to Oracle</label>
                 <field id="enabled" translate="label" type="select"  showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -39,7 +39,7 @@
             </group>
 
             <group id="send_mail" translate="label" sortOrder="21" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Send EMail When Error</label>
+                <label>Send mail when error</label>
                 <field id="enabled" translate="label" type="select"  showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -47,10 +47,6 @@
                 <field id="email_receive" translate="label comment" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Notify e-mails when error occurs</label>
                     <comment>Leave this blank for none, multiple recipients should be separated with a ";"</comment>
-                </field>
-                <field id="cron_settings" translate="label comment" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>How often do you want the cron to run?</label>
-                    <comment>Use Crontab Format (Eg. "*/5 * * * *" for every 5 minutes)</comment>
                 </field>
             </group>
 

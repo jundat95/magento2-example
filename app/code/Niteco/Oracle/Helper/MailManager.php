@@ -50,9 +50,6 @@ class MailManager {
         $generalEmail   = $this->configManager->getGeneralEmail();
         $generalName  = $this->configManager->getGeneralEmail();
 
-//        $this->sentEmailLogger->logText($generalEmail);
-//        $this->sentEmailLogger->logText($generalName);
-
         /**
          * If nothing was found, use our default
          */
