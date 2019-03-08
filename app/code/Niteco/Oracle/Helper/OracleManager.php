@@ -62,19 +62,18 @@ class OracleManager {
         $response = curl_exec($ch);
         curl_close($ch);
 
-        $this->sentOracleLogger->logText($response);
-
 //        $this->sentOracleLogger->logArray($order);
 //        $this->sentOracleLogger->logArray($orderJson);
 //        $this->sentOracleLogger->logArray($response);
 
-        $random = random_int(0, 1);
-        $status = $random ? true : false;
-        $responseJson = json_decode('{"success":'.$status.',"orderID":null,"error_message":"failed reason"}');
+        $responseJson = json_decode($response);
 
-        if ($responseJson->success)
+        if ($responseJson->success) {
             return true;
-        return false;
+        } else {
+            $this->sentOracleLogger->logText($response);
+            return false;
+        }
 
     }
 }
