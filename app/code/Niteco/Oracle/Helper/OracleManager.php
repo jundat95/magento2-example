@@ -10,17 +10,31 @@ namespace Niteco\Oracle\Helper;
 
 class OracleManager {
 
-    private $sentOracleLogger;
     private $url = 'https://2074147.restlets.api.netsuite.com/app/site/hosting/restlet.nl?script=78&deploy=1';
+    private $auth = 'Authorization:NLAuth nlauth_account=2074147, nlauth_email=netsuite@claremont.se, nlauth_signature=Integration1, nlauth_role=1004';
+
+    private $sentOracleLogger;
+    private $configManager;
 
     public function __construct(
-        \Niteco\Oracle\Common\SentOracleLogger $sentOracleLogger
+        \Niteco\Oracle\Common\SentOracleLogger $sentOracleLogger,
+        \Niteco\Oracle\Helper\ConfigManager $configManager
     )
     {
         $this->sentOracleLogger = $sentOracleLogger;
+        $this->configManager = $configManager;
     }
 
     public function pushOrderToOracle($order) {
+
+        // get config from admin
+        if (!empty($this->configManager->getOracleEndpoint())) {
+            $this->url = $this->configManager->getOracleEndpoint();
+        }
+        if (!empty($this->configManager->getOracleAuth())) {
+            $this->auth = $this->configManager->getOracleAuth();
+        }
+
 
         $orderJson = json_encode($order);
 
@@ -28,8 +42,8 @@ class OracleManager {
 
         $headers=  array(
             'cache-control:no-cache',
-            'Authorization:NLAuth nlauth_account=2074147, nlauth_email=netsuite@claremont.se, nlauth_signature=Integration1, nlauth_role=1004',
-            'Content-Type:application/json'
+            'Content-Type:application/json',
+            $this->auth
         );
 
         // Set the url, number of POST vars, POST data

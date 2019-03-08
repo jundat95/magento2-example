@@ -47,6 +47,14 @@ class ConfigManager extends AbstractHelper {
         return $this->getConfig('general', 'store_id');
     }
 
+    public function getOracleEndpoint() {
+        return $this->getConfig('general', 'oracle_endpoint');
+    }
+
+    public function getOracleAuth() {
+        return $this->getConfig('general', 'oracle_auth');
+    }
+
     public function getEmailReceive() {
         return $this->getConfig('send_mail', 'email_receive');
     }

@@ -30,11 +30,20 @@
                     <label>Queue Key</label>
                     <comment>Queue Key example: nitecoqueue</comment>
                 </field>
-
                 <field id="store_id" translate="label" type="text"  showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Store ID</label>
                     <comment>Default Store US = 1</comment>
                 </field>
+
+                <field id="oracle_endpoint" translate="label" type="text"  showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Oracle Endpoint</label>
+                    <comment>Input oracle endpoint</comment>
+                </field>
+
+                <field id="oracle_auth" translate="label" type="text"  showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Oracle Authentication</label>
+                </field>
+
 
             </group>
 

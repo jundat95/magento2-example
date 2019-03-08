@@ -64,9 +64,9 @@ php bin/magento cache:flush
 
 *Go to mysql admin, use database*
 
-1. Check status order
+1. Check status order in schedule
 
-User query
+User mysql query
 ```bash
 select * from niteco_oracle_schedule;
 ```
@@ -83,4 +83,16 @@ select * from cron_schedule where job_code like '%NitecoOracleSendEmail%';
 File log save with name: 
 1. /project-name/var/log/niteco_oracle_sent_email.log
 2. /project-name/var/log/niteco_oracle_sent_oracle.log
+
+## Check order send to Oracle success
+
+1. Check file log
+*/project-name/var/log/niteco_oracle_sent_oracle.log*
+
+2. Go to Sales -> Orders and 
+*Check text: Transferred to Oracle*
+
+
+
+
 
