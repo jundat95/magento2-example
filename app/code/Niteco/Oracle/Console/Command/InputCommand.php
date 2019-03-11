@@ -78,9 +78,13 @@ class InputCommand extends Command {
             $output->writeln('Niteco Oracle: invalid options');
             $output->writeln('usage:    niteco:oracle [queues] [sendmails] [sendorders]');
             $output->writeln('(default operation is replace)');
-            $output->writeln('          queues      (list queues)');
-            $output->writeln('          sendmails   (execute send email)');
-            $output->writeln('          sendorders  (execute send orders)');
+            $output->writeln('          sendmails       (execute send email)');
+            $output->writeln('          sendorders      (execute send orders)');
+            $output->writeln('          sendorders2     (execute send orders2)');
+            $output->writeln('          sendorders3     (execute send orders3)');
+            $output->writeln('          queues          (list queues)');
+            $output->writeln('          queues2         (list queues2)');
+            $output->writeln('          queues3         (list queues3)');
         }
         return Cli::RETURN_SUCCESS;
     }

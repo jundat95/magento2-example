@@ -70,7 +70,7 @@ class OracleManager {
 
         // check response empty
         if (empty($response)) {
-            $this->sentOracleLogger->logText('Response send by Oracle is empty');
+            $this->sentOracleLogger->logText('Order # '.$order['increment_id'].' error message: response send by Oracle is empty');
             $sentSuccess = false;
             return $sentSuccess;
         }
@@ -83,7 +83,7 @@ class OracleManager {
                 $sentSuccess = false;
             }
         } else {
-            $this->sentOracleLogger->logText('Invalid params: success');
+            $this->sentOracleLogger->logText('Order # '.$order['increment_id'].' error message: invalid params success');
             $sentSuccess = false;
         }
         return $sentSuccess;
