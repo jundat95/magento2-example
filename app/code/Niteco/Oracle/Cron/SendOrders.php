@@ -45,13 +45,38 @@ class SendOrders {
         $isSendOrderEnable = $this->configManager->isSendOrderEnable();
         if (empty($isSendOrderEnable) || $isSendOrderEnable === "0") return;
 
-        $this->sendOrdersWithRedis();
+        $this->sendOrdersWithRedis(1);
 
     }
 
-    public function sendOrdersWithRedis() {
+    public function executeQueue2() {
 
-        $orderId = $this->queueManager->popOrderId();
+        $isSendOrderEnable = $this->configManager->isSendOrderEnable();
+        if (empty($isSendOrderEnable) || $isSendOrderEnable === "0") return;
+
+        $this->sendOrdersWithRedis(2);
+
+    }
+
+    public function executeQueue3() {
+
+        $isSendOrderEnable = $this->configManager->isSendOrderEnable();
+        if (empty($isSendOrderEnable) || $isSendOrderEnable === "0") return;
+
+        $this->sendOrdersWithRedis(3);
+
+    }
+
+    public function sendOrdersWithRedis($queueCurrent = 1) {
+
+        if ($queueCurrent === 1) {
+            $orderId = $this->queueManager->popOrderId();
+        } else if ($queueCurrent === 2) {
+            $orderId = $this->queueManager->popOrderIdQueue2();
+        } else if ($queueCurrent === 3) {
+            $orderId = $this->queueManager->popOrderIdQueue3();
+        }
+
         if ($orderId) {
 
             // get order
@@ -65,6 +90,7 @@ class SendOrders {
             $this->scheduleManager->changeStatus(SentToOracleStatus::SENDING, $schedule);
             $currentTime = $this->timezoneInterface->date()->getTimestamp();
             $this->scheduleManager->changeTimeExecute($currentTime, $schedule);
+            $this->sentOracleLogger->logText($currentTime);
 
             if ($this->oracleManager->pushOrderToOracle($orderData)) {
 //                $this->sentOracleLogger->logText('Sent order '.$orderId.' to Oracle is success');
@@ -81,7 +107,12 @@ class SendOrders {
                 $this->scheduleManager->setMessage('Sent order to Oracle is fail', $schedule);
 
                 // add orderId to queue
-                $this->queueManager->pushOrderId($orderId);
+                if ($queueCurrent === 1) {
+                    $this->queueManager->pushOrderIdQueue2($orderId);
+                } else if ($queueCurrent === 2) {
+                    $this->queueManager->pushOrderIdQueue3($orderId);
+                }
+
             }
 
         } else {
@@ -89,6 +120,7 @@ class SendOrders {
         }
 
     }
+
 
     public function sendOrdersWithMySQL() {
         $schedules = $this->scheduleManager->getOrdersSchedule();

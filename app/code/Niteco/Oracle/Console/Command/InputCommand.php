@@ -58,6 +58,14 @@ class InputCommand extends Command {
             $queues = $this->queueManager->getAllOrderId();
             $output->writeln('List queues: ');
             $output->writeln($queues);
+        } else if ($commandName === 'queues2') {
+            $queues2 = $this->queueManager->getAllOrderIdQueue2();
+            $output->writeln('List queues2: ');
+            $output->writeln($queues2);
+        } else if ($commandName === 'queues3') {
+            $queues3 = $this->queueManager->getAllOrderIdQueue3();
+            $output->writeln('List queues3: ');
+            $output->writeln($queues3);
         } else if ($commandName === 'sendmails') {
             $this->sendEmail->execute();
         } else if ($commandName === 'sendorders') {

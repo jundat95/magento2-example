@@ -27,6 +27,8 @@ class OracleManager {
 
     public function pushOrderToOracle($order) {
 
+        $sentSuccess = true;
+
         // get config from admin
         if (!empty($this->configManager->getOracleEndpoint())) {
             $this->url = $this->configManager->getOracleEndpoint();
@@ -66,14 +68,25 @@ class OracleManager {
 //        $this->sentOracleLogger->logArray($orderJson);
 //        $this->sentOracleLogger->logArray($response);
 
+        // check response empty
+        if (empty($response)) {
+            $this->sentOracleLogger->logText('Response send by Oracle is empty');
+            $sentSuccess = false;
+            return $sentSuccess;
+        }
+
         $responseJson = json_decode($response);
 
-        if ($responseJson->success) {
-            return true;
+        if (array_key_exists('success', $responseJson)) {
+            if (!$responseJson->success) {
+                $this->sentOracleLogger->logText($response);
+                $sentSuccess = false;
+            }
         } else {
-            $this->sentOracleLogger->logText($response);
-            return false;
+            $this->sentOracleLogger->logText('Invalid params: success');
+            $sentSuccess = false;
         }
+        return $sentSuccess;
 
     }
 }

@@ -74,4 +74,34 @@ class QueueManager {
         return $this->redis->lRange($this->KEY, 0, -1);
     }
 
+    // Order queue 2
+    public function pushOrderIdQueue2($orderId) {
+
+        $this->redis->rPush($this->KEY.'2', $orderId);
+    }
+
+    public function popOrderIdQueue2() {
+
+        return $this->redis->lPop($this->KEY.'2');
+    }
+
+    public function getAllOrderIdQueue2() {
+        return $this->redis->lRange($this->KEY.'2', 0, -1);
+    }
+
+    // Order queue 3
+    public function pushOrderIdQueue3($orderId) {
+
+        $this->redis->rPush($this->KEY.'3', $orderId);
+    }
+
+    public function popOrderIdQueue3() {
+
+        return $this->redis->lPop($this->KEY.'3');
+    }
+
+    public function getAllOrderIdQueue3() {
+        return $this->redis->lRange($this->KEY.'3', 0, -1);
+    }
+
 }
