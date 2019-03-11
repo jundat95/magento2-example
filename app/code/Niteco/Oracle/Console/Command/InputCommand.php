@@ -70,6 +70,10 @@ class InputCommand extends Command {
             $this->sendEmail->execute();
         } else if ($commandName === 'sendorders') {
             $this->sendOrders->execute();
+        }  else if ($commandName === 'sendorders2') {
+            $this->sendOrders->executeQueue2();
+        }  else if ($commandName === 'sendorders3') {
+            $this->sendOrders->executeQueue3();
         } else {
             $output->writeln('Niteco Oracle: invalid options');
             $output->writeln('usage:    niteco:oracle [queues] [sendmails] [sendorders]');
