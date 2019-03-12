@@ -37,7 +37,6 @@ class MailManager {
          */
         $emails = explode(';', $this->configManager->getEmailReceive());
 
-
         /**
          * Remove any whitespace
          */
@@ -48,7 +47,7 @@ class MailManager {
          * Fetch the general e-mail address
          */
         $generalEmail   = $this->configManager->getGeneralEmail();
-        $generalName  = $this->configManager->getGeneralEmail();
+        $generalName  = $this->configManager->getGeneralName();
 
         /**
          * If nothing was found, use our default

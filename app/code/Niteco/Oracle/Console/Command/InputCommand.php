@@ -43,7 +43,7 @@ class InputCommand extends Command {
         $this->setName('niteco:oracle')
             ->addArgument(
                 self::INPUT_KEY_NAME,
-                InputArgument::REQUIRED,
+                InputArgument::OPTIONAL,
                 'Command name'
             );
         parent::configure();
@@ -66,17 +66,17 @@ class InputCommand extends Command {
             $queues3 = $this->queueManager->getAllOrderIdQueue3();
             $output->writeln('List queues3: ');
             $output->writeln($queues3);
-        } else if ($commandName === 'sendmails') {
-            $this->sendEmail->execute();
         } else if ($commandName === 'sendorders') {
             $this->sendOrders->execute();
-        }  else if ($commandName === 'sendorders2') {
+        } else if ($commandName === 'sendorders2') {
             $this->sendOrders->executeQueue2();
-        }  else if ($commandName === 'sendorders3') {
+        } else if ($commandName === 'sendorders3') {
             $this->sendOrders->executeQueue3();
+        } else if ($commandName === 'sendmails') {
+            $this->sendEmail->execute();
         } else {
             $output->writeln('Niteco Oracle: invalid options');
-            $output->writeln('usage:    niteco:oracle [queues] [sendmails] [sendorders]');
+            $output->writeln('usage:    niteco:oracle [sendmails] [sendorders] [queues]');
             $output->writeln('(default operation is replace)');
             $output->writeln('          sendmails       (execute send email)');
             $output->writeln('          sendorders      (execute send orders)');
