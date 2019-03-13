@@ -44,6 +44,11 @@
                     <label>Oracle Authentication</label>
                 </field>
 
+                <field id="api_timeout" translate="label" type="text"  showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Oracle Api Timeout</label>
+                    <comment>Default: 5 seconds</comment>
+                </field>
+
 
             </group>
 

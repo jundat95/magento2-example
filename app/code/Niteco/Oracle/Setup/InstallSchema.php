@@ -45,7 +45,7 @@ class InstallSchema implements InstallSchemaInterface {
             'Order id'
         )->addColumn(
             'increment_id',
-            Table::TYPE_INTEGER,
+            Table::TYPE_TEXT,
             null,
             ['nullable' => false],
             'Order increment id'

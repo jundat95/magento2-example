@@ -55,12 +55,16 @@ class ConfigManager extends AbstractHelper {
         return $this->getConfig('general', 'oracle_auth');
     }
 
-    public function getEmailReceive() {
-        return $this->getConfig('send_mail', 'email_receive');
-    }
-
     public function isSendOrderEnable() {
         return $this->getConfig('general', 'enabled');
+    }
+
+    public function getApiTimeout() {
+        return $this->getConfig('general', 'api_timeout');
+    }
+
+    public function getEmailReceive() {
+        return $this->getConfig('send_mail', 'email_receive');
     }
 
     public function isSendMailEnable() {

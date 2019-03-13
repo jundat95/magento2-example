@@ -16,6 +16,8 @@ class OracleManager {
     private $sentOracleLogger;
     private $configManager;
 
+    private $apiTimeout = 5;
+
     public function __construct(
         \Niteco\Oracle\Common\SentOracleLogger $sentOracleLogger,
         \Niteco\Oracle\Helper\ConfigManager $configManager
@@ -36,6 +38,10 @@ class OracleManager {
         if (!empty($this->configManager->getOracleAuth())) {
             $this->auth = $this->configManager->getOracleAuth();
         }
+        if (!empty($this->configManager->getApiTimeout())) {
+            $this->apiTimeout = $this->configManager->getApiTimeout();
+        }
+
 
 
         $orderJson = json_encode($order);
@@ -50,6 +56,10 @@ class OracleManager {
 
         // Set the url, number of POST vars, POST data
         curl_setopt($ch,CURLOPT_URL, $this->url);
+
+        //timeout in seconds
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->apiTimeout);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, true);
