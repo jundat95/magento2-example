@@ -27,7 +27,7 @@ class OracleManager {
         $this->configManager = $configManager;
     }
 
-    public function pushOrderToOracle($order) {
+    public function pushOrderToOracle($order, $schedule) {
 
         $sentSuccess = true;
 
@@ -41,8 +41,6 @@ class OracleManager {
         if (!empty($this->configManager->getApiTimeout())) {
             $this->apiTimeout = $this->configManager->getApiTimeout();
         }
-
-
 
         $orderJson = json_encode($order);
 
@@ -74,13 +72,10 @@ class OracleManager {
         $response = curl_exec($ch);
         curl_close($ch);
 
-//        $this->sentOracleLogger->logArray($order);
-//        $this->sentOracleLogger->logArray($orderJson);
-//        $this->sentOracleLogger->logArray($response);
-
         // check response empty
         if (empty($response)) {
             $this->sentOracleLogger->logText('Order # '.$order['increment_id'].' error message: response send by Oracle is empty');
+            $schedule->setMessage('response send by Oracle is empty');
             $sentSuccess = false;
             return $sentSuccess;
         }
@@ -90,10 +85,12 @@ class OracleManager {
         if (array_key_exists('success', $responseJson)) {
             if (!$responseJson->success) {
                 $this->sentOracleLogger->logText($response);
+                $schedule->setMessage($response);
                 $sentSuccess = false;
             }
         } else {
             $this->sentOracleLogger->logText('Order # '.$order['increment_id'].' error message: invalid params success');
+            $schedule->setMessage('invalid params: success');
             $sentSuccess = false;
         }
         return $sentSuccess;

@@ -91,19 +91,16 @@ class SendOrders {
             $currentTime = $this->timezoneInterface->date()->getTimestamp();
             $this->scheduleManager->changeTimeExecute($currentTime, $schedule);
 
-            if ($this->oracleManager->pushOrderToOracle($orderData)) {
-//                $this->sentOracleLogger->logText('Sent order '.$orderId.' to Oracle is success');
+            if ($this->oracleManager->pushOrderToOracle($orderData, $schedule)) {
 
                 $this->orderManager->addOrderComment('Transferred to Oracle with order # '.$order->getData('increment_id'), $order);
                 $this->scheduleManager->changeStatus(SentToOracleStatus::SENT_SUCCESS, $schedule);
                 $currentTime = $this->timezoneInterface->date()->getTimestamp();
                 $this->scheduleManager->changeTimeFinished($currentTime, $schedule);
             } else {
-//                $this->sentOracleLogger->logText('Sent order to Oracle is fail');
 
                 $this->orderManager->addOrderComment('Not Transferred to Oracle with order # '.$order->getData('increment_id'), $order);
                 $this->scheduleManager->changeStatus(SentToOracleStatus::SENT_FAIL, $schedule);
-                $this->scheduleManager->setMessage('Sent fail', $schedule);
 
                 // add orderId to queue
                 if ($queueCurrent === 1) {

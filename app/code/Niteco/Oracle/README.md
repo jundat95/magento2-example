@@ -49,11 +49,11 @@ php bin/magento cache:flush
 ## Command line
 ### Use command check redis work, and show queues
 ```bash
-    php bin/magento niteco:oracle queues
+    php bin/magento niteco:oracle queues [queues2] [queues3]
 ```
 ### Send orders
 ```bash
-    php bin/magento niteco:oracle sendorders
+    php bin/magento niteco:oracle sendorders [sendorders2] [sendorders3]
 ```
 ### Send email
 ```bash
